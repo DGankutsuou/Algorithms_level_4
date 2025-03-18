@@ -37,11 +37,6 @@ string	dozens[16] = {
 	"ninety"
 };
 
-// void	handle_after_99(string text, int number)
-// {
-
-// }
-
 void	convert_number_into_text(long number)
 {
 	if (number <= 0)
