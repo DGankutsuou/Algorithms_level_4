@@ -36,11 +36,13 @@ int	main(void)
 	short	month;
 	short	day;
 	short	year;
+	short	day_idx;
 
 	year = input::read_number("Enter the year: ");
 	month = input::read_number_in_range("Enter a month ", 1, 12);
 	day = input::read_number_in_range("Enter a day ", 1, 31);
-	cout << "The day index is: " << day_idx(day, month, year) << endl;
-	cout << "The day is: " << day_name(day_idx(day, month, year)) << endl;
+	day_idx = day_idx(day, month, year);
+	cout << "The day index is: " << day_idx << endl;
+	cout << "The day is: " << day_name(day_idx) << endl;
 	return (0);
 }
