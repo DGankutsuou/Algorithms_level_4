@@ -46,10 +46,7 @@ void	print_year_times(s_year t_year)
 
 short	number_of_days_in_year(short year)
 {
-	if (is_leap_year(year))
-		return (366);
-	else
-		return (365);
+	return (is_leap_year(year) ? 366 : 365);
 }
 
 short	number_of_hours_in_year(short year)
