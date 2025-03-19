@@ -37,57 +37,75 @@ string	dozens[16] = {
 	"ninety"
 };
 
-void	convert_number_into_text(long number)
+string	nbr_to_txt(long number)
 {
 	if (number <= 0)
-		return ;
+		return ("");
 	if (number < 20)
-	{
-		cout << units[number] << " ";
-		return ;
-	}
+		return (units[number] + " ");
 	else if (number < 100)
-	{
-		cout << dozens[number / 10 - 2] << " ";
-		number %= 10;
-	}
+		return (dozens[number / 10 - 2] + " " + nbr_to_txt(number % 10));
 	else if (number < 1000)
 	{
-		convert_number_into_text(number / 100);
-		cout << "hundered";
 		if (number >= 200)
-			cout << "s";
-		cout << " ";
-		number %= 100;
+		{
+			return (
+				nbr_to_txt(number / 100) +
+				"hundereds " +
+				nbr_to_txt(number % 100)
+			);
+		}
+		return (
+			"one hundered " +
+			nbr_to_txt(number % 100)
+		);
 	}
 	else if (number < 1000000)
 	{
-		convert_number_into_text(number / 1000);
-		cout << "thousand";
 		if (number >= 2000)
-			cout << "s";
-		cout << " ";
-		number %= 1000;
+		{
+			return (
+				nbr_to_txt(number / 1000) +
+				"thousands " +
+				nbr_to_txt(number % 1000)
+			);
+		}
+		return (
+			"one thousand " +
+			nbr_to_txt(number % 1000)
+		);
 	}
 	else if (number < 1000000000)
 	{
-		convert_number_into_text(number / 1000000);
-		cout << "million";
 		if (number >= 2000000)
-			cout << "s";
-		cout << " ";
-		number %= 1000000;
+		{
+			return (
+				nbr_to_txt(number / 1000000) +
+				"millions " +
+				nbr_to_txt(number % 1000000)
+			);
+		}
+		return (
+			"one million " +
+			nbr_to_txt(number % 1000000)
+		);
 	}
 	else if (number < 1000000000000)
 	{
-		convert_number_into_text(number / 1000000000);
-		cout << "billion";
 		if (number >= 2000000000)
-			cout << "s";
-		cout << " ";
-		number %= 1000000000;
+		{
+			return (
+				nbr_to_txt(number / 1000000000) +
+				"billions " +
+				nbr_to_txt(number % 1000000000)
+			);
+		}
+		return (
+			"one billion " +
+			nbr_to_txt(number % 1000000000)
+		);
 	}
-	convert_number_into_text(number);
+	return ("");
 }
 
 int	main(void)
@@ -98,8 +116,7 @@ int	main(void)
 	cin >> number;
 	if (number > INT_MAX)
 		number = INT_MAX;
-	cout << "The number as a text is: ";
-	convert_number_into_text(number);
+	cout << "The number as a text is: " << nbr_to_txt(number);
 	cout << endl;
 	return 0;
 }
