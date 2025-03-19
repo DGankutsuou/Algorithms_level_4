@@ -19,8 +19,9 @@ bool	is_leap_year(unsigned short year)
 
 short	number_of_days_in_month(short month, short year)
 {
+	short	number_of_days[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 	return (month == 2 ? (is_leap_year(year) ? 29 : 28)
-		: (month <= 7 ? (month % 2 != 0 ? 31 : 30) : (month % 2 == 0 ? 31 : 30)));
+		: number_of_days[month - 1]);
 }
 
 short	number_of_hours_in_month(short month, short year)
