@@ -26,7 +26,7 @@ string	units[20] = {
 	"nineteen"
 };
 
-string	dozens[16] = {
+string	dozens[8] = {
 	"twentey",
 	"thiry",
 	"fourty",
