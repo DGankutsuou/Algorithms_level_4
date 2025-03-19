@@ -4,7 +4,7 @@
 using namespace std;
 
 string	units[20] = {
-	"zero",
+	"",
 	"one",
 	"two",
 	"three",
