@@ -2,6 +2,7 @@
 #include "inputslib.h"
 using namespace std;
 
+/*
 struct s_year
 {
 	short	year;
@@ -11,6 +12,7 @@ struct s_year
 	int		minutes;
 	int		seconds;
 };
+*/
 
 bool	is_leap_year(unsigned short year)
 {

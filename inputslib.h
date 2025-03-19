@@ -76,13 +76,13 @@ namespace input
 		return (ft_atoi(number));
 	}
 
-	int read_number_in_range(int from, int to)
+	int read_number_in_range(string message, int from, int to)
 	{
 		int number;
 
 		do
 		{
-			cout << "Enter a number from " << from << " to " << to << ": ";
+			cout << message << "(" << from << " - " << to << "): ";
 			cin >> number;
 		} while (number < from || number > to);
 
