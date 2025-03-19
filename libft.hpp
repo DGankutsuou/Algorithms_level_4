@@ -175,7 +175,7 @@ namespace ft
 		string	word;
 		short	pos;
 		vector <string> words;
-	
+
 		while ((pos = str.find(delim)) != string::npos)
 		{
 			word = str.substr(0, pos);

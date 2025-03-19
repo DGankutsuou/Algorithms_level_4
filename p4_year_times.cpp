@@ -16,7 +16,7 @@ bool	is_leap_year(unsigned short year)
 {
 	return (year % 400 == 0 || (year % 100 != 0 && year % 4 == 0));
 }
-
+/*
 s_year	count_year_times(short year)
 {
 	s_year	t_year;
@@ -43,7 +43,7 @@ void	print_year_times(s_year t_year)
 	cout << "Number of minutes: " << t_year.minutes << "\n";
 	cout << "Number of seconds: " << t_year.seconds << endl;
 }
-
+*/
 short	number_of_days_in_year(short year)
 {
 	return (is_leap_year(year) ? 366 : 365);
