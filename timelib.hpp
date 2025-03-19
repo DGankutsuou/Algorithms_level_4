@@ -49,4 +49,33 @@ namespace time
 	{
 		return (number_of_minutes_in_month(month, year) * 60);
 	}
+
+	short	day_idx(short day, short month, short year)
+	{
+		short	a;
+		short	y;
+		short	m;
+		short	d;
+
+		a = (14 - month) / 12;
+		y = year - a;
+		m = month + 12 * a - 2;
+		d = (day + y + y / 4 - y / 100 + y / 400 + (31 * m) / 12) % 7;
+		return (d);
+	}
+
+	string	day_name(short index)
+	{
+		string	week_days[7] = {
+			"Sunday",
+			"Monday",
+			"Tuesday",
+			"Wednesday",
+			"Thursday",
+			"Friday",
+			"Saturday"
+		};
+	
+		return (week_days[index]);
+	}
 }
