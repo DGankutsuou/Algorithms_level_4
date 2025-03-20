@@ -123,8 +123,8 @@ namespace tms
 		short	number_of_days;
 
 		print_month_calender_header(get_month_symbol(month));
-		day_idx = tms::day_idx(1, month, year);
-		number_of_days = tms::number_of_days_in_month(month, year);
+		day_idx = day_idx(1, month, year);
+		number_of_days = number_of_days_in_month(month, year);
 		for (int i = 0; i < day_idx; i++)
 		{
 			cout << "     ";
@@ -149,7 +149,19 @@ namespace tms
 		print_year_calender_header(year);
 		for (int m = 1; m <= 12; m++)
 		{
-			tms::print_month_calender(m, year);
+			print_month_calender(m, year);
 		}
+	}
+
+	short	days_number_to_date_in_year(short day, short month, short year)
+	{
+		short	number_of_days = 0;
+
+		for (int m = 1; m < month; m++)
+		{
+			number_of_days += number_of_days_in_month(m, year);
+		}
+		number_of_days += day;
+		return (number_of_days);
 	}
 }
