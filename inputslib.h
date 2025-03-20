@@ -1,5 +1,5 @@
 #pragma once
-#include <iostream>
+# include <iostream>
 using namespace std;
 
 int my_str_is_numeric(string str)

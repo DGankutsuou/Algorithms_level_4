@@ -1,4 +1,5 @@
-#include <iostream>
+#pragma once
+# include <iostream>
 using namespace std;
 
 namespace time
@@ -74,6 +75,17 @@ namespace time
 			"Thursday",
 			"Friday",
 			"Saturday"
+		};
+
+		return (week_days[index]);
+	}
+
+	string	day_symbol(short index)
+	{
+		string	week_days[7] = {
+			"Sun", "Mon", "Tue",
+			"Wed", "Thu", "Fri",
+			"Sat"
 		};
 	
 		return (week_days[index]);
