@@ -66,7 +66,7 @@ namespace tms
 		return (number_of_minutes_in_month(month, year) * 60);
 	}
 
-	short	day_idx(short day, short month, short year)
+	short	day_index(short day, short month, short year)
 	{
 		short	a;
 		short	y;
@@ -123,7 +123,7 @@ namespace tms
 		short	number_of_days;
 
 		print_month_calender_header(get_month_symbol(month));
-		day_idx = day_idx(1, month, year);
+		day_idx = day_index(1, month, year);
 		number_of_days = number_of_days_in_month(month, year);
 		for (int i = 0; i < day_idx; i++)
 		{
@@ -153,7 +153,7 @@ namespace tms
 		}
 	}
 
-	short	days_number_to_date_in_year(short day, short month, short year)
+	short	count_days_to_date_in_year(short day, short month, short year)
 	{
 		short	number_of_days = 0;
 
