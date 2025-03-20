@@ -8,21 +8,27 @@ struct s_date
 	short	year;
 };
 
-s_date	convert_days_to_date_in_year(short number_of_days, short year)
+s_date	get_date_from_day_order_in_year(short number_of_days, short year)
 {
 	s_date	date;
 	short	number_of_days_of_month;
 
 	date.year = year;
 	date.month = 1;
-	number_of_days_of_month = tms::number_of_days_in_month(date.month, year);
-	while (number_of_days > number_of_days_of_month)
+	while (true)
 	{
-		number_of_days -= number_of_days_of_month;
 		number_of_days_of_month = tms::number_of_days_in_month(date.month, year);
-		date.month++;
+		if (number_of_days > number_of_days_of_month)
+		{
+			number_of_days -= number_of_days_of_month;
+			date.month++;
+		}
+		else
+		{
+			date.day = number_of_days;
+			break ;
+		}
 	}
-	date.day = number_of_days;
 	return (date);
 }
 
@@ -42,10 +48,10 @@ int	main(void)
 	year = input::read_number("Enter the year: ");
 	month = input::read_number_in_range("Enter a month ", 1, 12);
 	day = input::read_number_in_range("Enter a day ", 1, 31);
-	number_of_days = tms::count_days_to_date_in_year(day, month, year);
+	number_of_days = tms::get_day_order_in_year(day, month, year);
 	cout << "The number of days from the beginning of the year is: ";
 	cout << number_of_days << endl;
-	date = convert_days_to_date_in_year(number_of_days, year);
+	date = get_date_from_day_order_in_year(number_of_days, year);
 	cout << "date for [" << number_of_days << "]: ";
 	print_date(date);
 	return (0);

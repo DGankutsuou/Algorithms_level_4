@@ -153,7 +153,7 @@ namespace tms
 		}
 	}
 
-	short	count_days_to_date_in_year(short day, short month, short year)
+	short	get_day_order_in_year(short day, short month, short year)
 	{
 		short	number_of_days = 0;
 

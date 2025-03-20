@@ -1,7 +1,7 @@
 #include "timelib.hpp"
 #include "inputslib.h"
 
-short	days_number_to_date_in_year(short day, short month, short year)
+short	get_day_order_in_year(short day, short month, short year)
 {
 	short	number_of_days = 0;
 
@@ -23,6 +23,6 @@ int	main(void)
 	month = input::read_number_in_range("Enter a month ", 1, 12);
 	day = input::read_number_in_range("Enter a day ", 1, 31);
 	cout << "The number of days from the beginning of the year is: ";
-	cout << days_number_to_date_in_year(day, month, year);
+	cout << get_day_order_in_year(day, month, year);
 	return (0);
 }
