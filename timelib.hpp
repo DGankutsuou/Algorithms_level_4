@@ -2,7 +2,15 @@
 # include <iostream>
 using namespace std;
 
-namespace time
+void	print_month_calender_header(string month_symbol)
+{
+	cout << "\n  _______________";
+	printf ("%s", month_symbol.c_str());
+	cout << "_______________\n";
+	cout << "  sun  mon  tue  wed  thu  fri  sat" << endl;
+}
+
+namespace tms
 {
 	bool is_leap_year(unsigned short year)
 	{
@@ -87,7 +95,45 @@ namespace time
 			"Wed", "Thu", "Fri",
 			"Sat"
 		};
-	
+
 		return (week_days[index]);
+	}
+
+	string	get_month_symbol(short month)
+	{
+		string	symbol[12] = {
+			"jan", "feb", "mar", "apr",
+			"may", "jun", "jul", "aug",
+			"sep", "oct", "nov", "dec"
+		};
+
+		return (symbol[month - 1]);
+	}
+
+	void	print_month_calender(short month, short year)
+	{
+		short	day_idx;
+		short	number_of_days;
+
+		print_month_calender_header(get_month_symbol(month));
+		day_idx = tms::day_idx(1, month, year);
+		number_of_days = tms::number_of_days_in_month(month, year);
+		for (int i = 0; i < day_idx; i++)
+		{
+			cout << "     ";
+		}
+		for (int i = 1; i <= number_of_days; i++)
+		{
+			// cout << right << setw(3) << i << "  ";
+			printf ("%5d", i);
+			if (day_idx == 6)
+			{
+				cout << "\n";
+				day_idx = 0;
+				continue ;
+			}
+			day_idx++;
+		}
+		cout << "\n" << endl;
 	}
 }
