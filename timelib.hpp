@@ -10,6 +10,13 @@ void	print_month_calender_header(string month_symbol)
 	cout << "  sun  mon  tue  wed  thu  fri  sat" << endl;
 }
 
+void	print_year_calender_header(short year)
+{
+	cout << "\n  _________________________________\n";
+	cout << "            Calender . " << year << "            ";
+	cout << "\n  _________________________________" << endl;
+}
+
 namespace tms
 {
 	bool is_leap_year(unsigned short year)
@@ -135,5 +142,14 @@ namespace tms
 			day_idx++;
 		}
 		cout << "\n" << endl;
+	}
+
+	void	print_year_calender(short year)
+	{
+		print_year_calender_header(year);
+		for (int m = 1; m <= 12; m++)
+		{
+			tms::print_month_calender(m, year);
+		}
 	}
 }
