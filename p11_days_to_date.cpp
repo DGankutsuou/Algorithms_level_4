@@ -11,12 +11,16 @@ struct s_date
 s_date	convert_days_to_date_in_year(short number_of_days, short year)
 {
 	s_date	date;
+	short	number_of_days_of_month;
 
 	date.year = year;
 	date.month = 1;
-	for (short ndm = tms::number_of_days_in_month(date.month, year); number_of_days > ndm; date.month++)
+	number_of_days_of_month = tms::number_of_days_in_month(date.month, year);
+	while (number_of_days > number_of_days_of_month)
 	{
-		number_of_days -= ndm;
+		number_of_days -= number_of_days_of_month;
+		number_of_days_of_month = tms::number_of_days_in_month(date.month, year);
+		date.month++;
 	}
 	date.day = number_of_days;
 	return (date);
