@@ -215,12 +215,12 @@ namespace tms
 		return (date);
 	}
 
-	bool	date1_less_than_date2(tms::s_date date1, tms::s_date date2)
+	bool	is_date1_less_than_date2(tms::s_date date1, tms::s_date date2)
 	{
 		return (date1.year < date2.year ? true : (date1.year == date2.year ? (date1.month < date2.month ? true : (date1.month == date2.month ? date1.day < date2.day : false)) : false));
 	}
 
-	bool	date1_equal_to_date2(tms::s_date date1, tms::s_date date2)
+	bool	is_date1_equal_to_date2(tms::s_date date1, tms::s_date date2)
 	{
 		return (date1.year == date2.year ? (date1.month == date2.month ? date1.day == date2.day : false) : false);
 	}
