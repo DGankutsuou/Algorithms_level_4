@@ -18,7 +18,7 @@ short	difference_between_two_dates(tms::s_date date1, tms::s_date date2, bool in
 	return (difference);
 }
 
-short	get_age_as_days(tms::s_date birthday)
+tms::s_date	get_system_date()
 {
 	time_t	t = time(0);
 	tm		*now = localtime(&t);
@@ -27,7 +27,12 @@ short	get_age_as_days(tms::s_date birthday)
 	current_date.year = now->tm_year + 1900;
 	current_date.month = now->tm_mon + 1;
 	current_date.day = now->tm_mday;
-	return (difference_between_two_dates(birthday, current_date));
+	return (current_date);
+}
+
+short	get_age_as_days(tms::s_date birthday)
+{
+	return (difference_between_two_dates(birthday, get_system_date(), true));
 }
 
 int	main(void)
