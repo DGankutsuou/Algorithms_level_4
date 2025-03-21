@@ -3,29 +3,30 @@
 
 tms::s_date	add_days_to_date(tms::s_date date, short number_of_days)
 {
-	tms::s_date	new_date = date;
+	short	month_days = 0;
 
-	if (date.day != 1 || date.month != 1)
+	number_of_days += tms::get_day_order_in_year(date.day, date.month, date.year);
+	date.month = 1;
+	while (true)
 	{
-		number_of_days += tms::get_day_order_in_year(date.day, date.month, date.year);
-		new_date.day = 1;
-		new_date.month = 1;
-	}
-	while (number_of_days > 365)
-	{
-		if (tms::is_leap_year(new_date.year))
+		month_days = tms::number_of_days_in_month(date.month, date.year);
+		if (number_of_days > month_days)
 		{
-			number_of_days -= 366;
-			new_date.year++;
+			number_of_days -= month_days;
+			date.month++;
+			if (date.month > 12)
+			{
+				date.year++;
+				date.month = 1;
+			}
 		}
 		else
 		{
-			number_of_days -= 365;
-			new_date.year++;
+			date.day = number_of_days;
+			break ;
 		}
 	}
-	new_date = tms::get_date_from_day_order_in_year(number_of_days, new_date.year);
-	return (new_date);
+	return (date);
 }
 
 int	main(void)
