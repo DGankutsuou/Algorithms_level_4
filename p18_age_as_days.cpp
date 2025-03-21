@@ -2,22 +2,6 @@
 #include "timelib.hpp"
 #include <ctime>
 
-short	difference_between_two_dates(tms::s_date date1, tms::s_date date2, bool include_last_day = false)
-{
-	short	difference = 0;
-
-	if (tms::is_date1_less_than_date2(date1, date2))
-	{
-		while (!tms::is_date1_equal_to_date2(date1, date2))
-		{
-			date1 = tms::add_one_day_to_date(date1);
-			difference++;
-		}
-		return (include_last_day ? ++difference : difference);
-	}
-	return (difference);
-}
-
 tms::s_date	get_system_date()
 {
 	time_t	t = time(0);
@@ -32,7 +16,7 @@ tms::s_date	get_system_date()
 
 short	get_age_as_days(tms::s_date birthday)
 {
-	return (difference_between_two_dates(birthday, get_system_date(), true));
+	return (tms::difference_between_two_dates(birthday, get_system_date(), true));
 }
 
 int	main(void)
