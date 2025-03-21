@@ -1,5 +1,6 @@
 #pragma once
 # include <iostream>
+# include "inputslib.h"
 using namespace std;
 
 void	print_month_calender_header(string month_symbol)
@@ -201,4 +202,14 @@ namespace tms
 		cout << date.day << "/" << date.month << "/" << date.year << endl;
 	}
 
+	s_date	read_date(string message)
+	{
+		s_date	date;
+
+		cout << message;
+		date.year = input::read_number("Enter the year: ");
+		date.month = input::read_number_in_range("Enter a month ", 1, 12);
+		date.day = input::read_number_in_range("Enter a day ", 1, 31);
+		return (date);
+	}
 }
