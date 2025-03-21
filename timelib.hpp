@@ -205,11 +205,23 @@ namespace tms
 	s_date	read_date(string message)
 	{
 		s_date	date;
+		short	number_of_days_of_month;
 
 		cout << message;
 		date.year = input::read_number("Enter the year: ");
 		date.month = input::read_number_in_range("Enter a month ", 1, 12);
-		date.day = input::read_number_in_range("Enter a day ", 1, 31);
+		number_of_days_of_month = number_of_days_in_month(date.month, date.year);
+		date.day = input::read_number_in_range("Enter a day ", 1, number_of_days_of_month);
 		return (date);
+	}
+
+	bool	date1_less_than_date2(tms::s_date date1, tms::s_date date2)
+	{
+		return (date1.year < date2.year ? true : (date1.year == date2.year ? (date1.month < date2.month ? true : (date1.month == date2.month ? date1.day < date2.day : false)) : false));
+	}
+
+	bool	date1_equal_to_date2(tms::s_date date1, tms::s_date date2)
+	{
+		return (date1.year == date2.year ? (date1.month == date2.month ? date1.day == date2.day : false) : false);
 	}
 }
