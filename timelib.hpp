@@ -19,6 +19,13 @@ void	print_year_calender_header(short year)
 
 namespace tms
 {
+	struct s_date
+	{
+		short	day;
+		short	month;
+		short	year;
+	};
+
 	bool is_leap_year(unsigned short year)
 	{
 		return (year % 400 == 0 || (year % 100 != 0 && year % 4 == 0));
@@ -164,4 +171,34 @@ namespace tms
 		number_of_days += day;
 		return (number_of_days);
 	}
+
+	s_date	get_date_from_day_order_in_year(short number_of_days, short year)
+	{
+		s_date	date;
+		short	number_of_days_of_month;
+
+		date.year = year;
+		date.month = 1;
+		while (true)
+		{
+			number_of_days_of_month = number_of_days_in_month(date.month, year);
+			if (number_of_days > number_of_days_of_month)
+			{
+				number_of_days -= number_of_days_of_month;
+				date.month++;
+			}
+			else
+			{
+				date.day = number_of_days;
+				break ;
+			}
+		}
+		return (date);
+	}
+
+	void	print_date(s_date date)
+	{
+		cout << date.day << "/" << date.month << "/" << date.year << endl;
+	}
+
 }
