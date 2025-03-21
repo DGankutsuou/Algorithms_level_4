@@ -6,7 +6,7 @@ bool	date1_less_than_date2(tms::s_date date1, tms::s_date date2)
 	bool	months_equal = (date1.month == date2.month);
 	bool	days_equal = (date1.day == date2.day);
 
-	return (years_equal && months_equal && days_equal);
+	return (years_equal ? (months_equal ? days_equal : false) : false);
 }
 
 int	main(void)
