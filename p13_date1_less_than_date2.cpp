@@ -2,14 +2,7 @@
 
 bool	date1_less_than_date2(tms::s_date date1, tms::s_date date2)
 {
-	short	date1_days = tms::get_day_order_in_year(date1.day, date1.month, date1.year);
-	short	date2_days = tms::get_day_order_in_year(date2.day, date2.month, date2.year);
-	bool	less_by_years = (date1.year < date2.year);
-	bool	years_equal = (date1.year == date2.year);
-	bool	less_by_days;
-
-	less_by_days = date1_days < date2_days;
-	return (less_by_years || (years_equal && less_by_days));
+	return (date1.year < date2.year ? true : (date1.year == date2.year ? (date1.month < date2.month ? true : (date1.month == date2.month ? date1.day < date2.day : false)) : false));
 }
 
 int	main(void)
