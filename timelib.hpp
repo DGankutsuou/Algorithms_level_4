@@ -224,4 +224,37 @@ namespace tms
 	{
 		return (date1.year == date2.year ? (date1.month == date2.month ? date1.day == date2.day : false) : false);
 	}
+
+	bool	is_last_day_in_month(tms::s_date date)
+	{
+		return (date.day == tms::number_of_days_in_month(date.month, date.year));
+	}
+
+	bool	is_last_month_in_year(tms::s_date date)
+	{
+		return (date.month == 12);
+	}
+
+	s_date	add_one_day_to_date(s_date date)
+	{
+		if (is_last_day_in_month(date))
+		{
+			if (is_last_month_in_year(date))
+			{
+				date.year++;
+				date.month = 1;
+				date.day = 1;
+			}
+			else
+			{
+				date.month++;
+				date.day = 1;
+			}
+		}
+		else
+		{
+			date.day++;
+		}
+		return (date);
+	}
 }
