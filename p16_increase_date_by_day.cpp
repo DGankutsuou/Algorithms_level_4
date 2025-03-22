@@ -1,7 +1,7 @@
 #include "timelib.hpp"
 #include "inputslib.h"
 
-tms::s_date	add_one_day_to_date(tms::s_date date)
+tms::s_date	add_one_day_to_date1(tms::s_date date)
 {
 	if (tms::is_last_day_in_month(date))
 	{
@@ -30,7 +30,7 @@ int	main(void)
 
 	date = tms::read_date("Enter Date: \n");
 	tms::print_date(date);
-	date = add_one_day_to_date(date);
+	date = add_one_day_to_date1(date);
 	cout << "After increasing it by one day" << endl;
 	tms::print_date(date);
 	return (0);

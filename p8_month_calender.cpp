@@ -27,7 +27,7 @@ void	print_month_calender(short month, short year)
 	short	number_of_days;
 
 	print_header(get_month_symbol(month));
-	day_idx = tms::day_idx(1, month, year);
+	day_idx = tms::get_day_order_in_year(1, month, year);
 	number_of_days = tms::number_of_days_in_month(month, year);
 	for (int i = 0; i < day_idx; i++)
 	{

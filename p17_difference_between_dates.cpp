@@ -1,6 +1,6 @@
 #include "timelib.hpp"
 
-int	difference_between_two_dates(tms::s_date date1, tms::s_date date2, bool include_last_day = false)
+int	difference_between_two_dates1(tms::s_date date1, tms::s_date date2, bool include_last_day = false)
 {
 	int	difference = 0;
 
@@ -29,8 +29,8 @@ int	main(void)
 	tms::print_date(date2);
 	cout << endl;
 	cout << "difference between the two dates: ";
-	cout << difference_between_two_dates(date1, date2) << endl;
+	cout << difference_between_two_dates1(date1, date2) << endl;
 	cout << "difference between the two dates including last day: ";
-	cout << difference_between_two_dates(date1, date2, true) << endl;
+	cout << difference_between_two_dates1(date1, date2, true) << endl;
 	return (0);
 }

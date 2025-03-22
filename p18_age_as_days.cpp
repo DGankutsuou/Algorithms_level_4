@@ -2,7 +2,7 @@
 #include "timelib.hpp"
 #include <ctime>
 
-tms::s_date	get_system_date()
+tms::s_date	get_system_date1()
 {
 	time_t	t = time(0);
 	tm		*now = localtime(&t);
@@ -14,9 +14,9 @@ tms::s_date	get_system_date()
 	return (current_date);
 }
 
-short	get_age_as_days(tms::s_date birthday)
+short	get_age_as_days1(tms::s_date birthday)
 {
-	return (tms::difference_between_two_dates(birthday, get_system_date(), true));
+	return (tms::difference_between_two_dates(birthday, get_system_date1(), true));
 }
 
 int	main(void)
@@ -29,7 +29,7 @@ int	main(void)
 	tms::print_date(birthday);
 	cout << endl;
 	cout << "You have lived ";
-	cout << get_age_as_days(birthday);
+	cout << get_age_as_days1(birthday);
 	cout << " days" << endl;
 	return (0);
 }
