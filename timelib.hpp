@@ -696,4 +696,14 @@ namespace tms
 	{
 		return (tms::difference_between_two_dates(period.start, period.end, include_last_day));
 	}
+
+	bool	is_day_within_period(tms::s_period period, tms::s_date date)
+	{
+		e_cmparation	condition1;
+		e_cmparation	condition2;
+	
+		condition1 = tms::compare_two_dates(date, period.end);
+		condition2 = tms::compare_two_dates(date, period.start);
+		return (!(condition1 == e_cmparation::after || condition2 == e_cmparation::before));
+	}
 }
