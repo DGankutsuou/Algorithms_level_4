@@ -6,7 +6,7 @@ short	calculate_vacation_days(tms::s_date start, tms::s_date end)
 
 	while (tms::is_date1_less_than_date2(start, end))
 	{
-		if (!tms::is_weekend(start))
+		if (tms::is_business_day(start))
 			counter++;
 		start = tms::add_one_day_to_date(start);
 	}
