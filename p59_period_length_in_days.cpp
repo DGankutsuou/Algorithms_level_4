@@ -9,7 +9,7 @@ int	main(void)
 {
 	tms::s_period	period;
 
-	period = tms::read_period("Enter first period\n");
+	period = tms::read_period("Enter the period\n");
 	cout << "Period length in days: " << period_length_in_days(period) << endl;
 	cout << "Period length in days with last day: " << period_length_in_days(period, true) << endl;
 	return (0);
