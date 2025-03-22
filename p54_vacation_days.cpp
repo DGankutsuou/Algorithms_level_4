@@ -1,6 +1,6 @@
 #include "timelib.hpp"
 
-short	calculate_vacation_days(tms::s_date start, tms::s_date end)
+short	calculate_vacation_days1(tms::s_date start, tms::s_date end)
 {
 	short	counter = 0;
 
@@ -25,7 +25,7 @@ int	main(void)
 	cout << "Vacation end: ";
 	tms::print_date(date2);
 	cout << endl;
-	cout << "Vacation priod is: " << calculate_vacation_days(date1, date2);
+	cout << "Vacation priod is: " << calculate_vacation_days1(date1, date2);
 	cout << endl;
 	return (0);
 }
