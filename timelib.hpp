@@ -1,6 +1,7 @@
 #pragma once
 # include <iostream>
 # include "inputslib.h"
+# include <ctime>
 using namespace std;
 
 void	print_month_calender_header(string month_symbol)
@@ -74,7 +75,7 @@ namespace tms
 		return (number_of_minutes_in_month(month, year) * 60);
 	}
 
-	short	day_index(short day, short month, short year)
+	short	get_day_order_in_week(short day, short month, short year)
 	{
 		short	a;
 		short	y;
@@ -86,6 +87,11 @@ namespace tms
 		m = month + 12 * a - 2;
 		d = (day + y + y / 4 - y / 100 + y / 400 + (31 * m) / 12) % 7;
 		return (d);
+	}
+
+	short	get_day_order_in_week(s_date date)
+	{
+		return (get_day_order_in_week(date.day, date.month, date.year));
 	}
 
 	string	day_name(short index)
@@ -117,9 +123,9 @@ namespace tms
 	string	get_month_symbol(short month)
 	{
 		string	symbol[12] = {
-			"jan", "feb", "mar", "apr",
-			"may", "jun", "jul", "aug",
-			"sep", "oct", "nov", "dec"
+			"Jan", "Feb", "Mar", "Apr",
+			"May", "Jun", "Jul", "Aug",
+			"Sep", "Oct", "Nov", "Dec"
 		};
 
 		return (symbol[month - 1]);
@@ -131,7 +137,7 @@ namespace tms
 		short	number_of_days;
 
 		print_month_calender_header(get_month_symbol(month));
-		day_idx = day_index(1, month, year);
+		day_idx = get_day_order_in_week(1, month, year);
 		number_of_days = number_of_days_in_month(month, year);
 		for (int i = 0; i < day_idx; i++)
 		{
@@ -171,6 +177,11 @@ namespace tms
 		}
 		number_of_days += day;
 		return (number_of_days);
+	}
+
+	short	get_day_order_in_year(s_date date)
+	{
+		return (get_day_order_in_year(date.day, date.month, date.year));
 	}
 
 	s_date	get_date_from_day_order_in_year(short number_of_days, short year)
@@ -416,5 +427,179 @@ namespace tms
 	{
 		date.year += 1000;
 		return (date);
+	}
+
+	tms::s_date	decrease_one_day_from_date(tms::s_date date)
+	{
+		if (date.day == 1)
+		{
+			if (date.month == 1)
+			{
+				date.year--;
+				date.month = 12;
+				date.day = 31;
+			}
+			else
+			{
+				date.month--;
+				date.day = tms::number_of_days_in_month(date.month, date.year);
+			}
+		}
+		else
+		{
+			date.day--;
+		}
+		return (date);
+	}
+
+	tms::s_date	decrease_x_days_from_date(tms::s_date date, int x)
+	{
+		short	counter = 0;
+
+		while (counter < x)
+		{
+			date = decrease_one_day_from_date(date);
+			counter++;
+		}
+		return (date);
+	}
+
+	tms::s_date	decrease_one_week_from_date(tms::s_date date)
+	{
+		short	counter = 0;
+
+		while (counter < 7)
+		{
+			date = decrease_one_day_from_date(date);
+			counter++;
+		}
+		return (date);
+	}
+
+	tms::s_date	decrease_x_weeks_from_date(tms::s_date date, int x)
+	{
+		short	counter = 0;
+
+		while (counter < x)
+		{
+			date = decrease_one_week_from_date(date);
+			counter++;
+		}
+		return (date);
+	}
+
+	tms::s_date	decrease_one_month_from_date(tms::s_date date)
+	{
+		short	days;
+
+		date.month--;
+		if (date.month == 0)
+		{
+			date.month = 12;
+			date.year--;
+		}
+		days = tms::number_of_days_in_month(date.month, date.year);
+		if (date.day > days)
+		{
+			date.day = days;
+		}
+		return (date);
+	}
+
+	tms::s_date	decrease_x_months_from_date(tms::s_date date, int x)
+	{
+		short	counter = 0;
+
+		while (counter < x)
+		{
+			date = decrease_one_month_from_date(date);
+			counter++;
+		}
+		return (date);
+	}
+
+	tms::s_date	decrease_one_year_from_date(tms::s_date date)
+	{
+		date.year--;
+		return (date);
+	}
+
+	tms::s_date	decrease_x_years_from_date(tms::s_date date, int x)
+	{
+		date.year -= x;
+		return (date);
+	}
+
+	tms::s_date	decrease_one_decade_from_date(tms::s_date date)
+	{
+		date.year -= 10;
+		return (date);
+	}
+
+	tms::s_date	decrease_x_decades_from_date(tms::s_date date, int x)
+	{
+		date.year -= x * 10;
+		return (date);
+	}
+
+	tms::s_date	decrease_one_century_from_date(tms::s_date date)
+	{
+		date.year -= 100;
+		return (date);
+	}
+
+	tms::s_date	decrease_one_millemuim_from_date(tms::s_date date)
+	{
+		date.year -= 1000;
+		return (date);
+	}
+
+	void	print_current_date()
+	{
+		tms::s_date	date;
+
+		date = tms::get_system_date();
+		cout << "Today is " << tms::day_name(get_day_order_in_week(date));
+		cout << " ";
+		tms::print_date(date);
+	}
+
+	bool	is_end_of_week(tms::s_date date)
+	{
+		return (get_day_order_in_week(date) == 6);
+	}
+
+	bool	is_weekend(tms::s_date date)
+	{
+		return (get_day_order_in_week(date) >= 5);
+	}
+
+	bool	is_business_day(tms::s_date date)
+	{
+		return (!is_weekend(date));
+	}
+
+	short	days_until_end_of_week(tms::s_date date)
+	{
+		return (6 - get_day_order_in_week(date));
+	}
+
+	short	days_until_end_of_month(tms::s_date date)
+	{
+		tms::s_date	end_of_month;
+
+		end_of_month = date;
+		end_of_month.day = tms::number_of_days_in_month(date.month, date.year);
+		return (tms::difference_between_two_dates(date, end_of_month));
+	}
+
+	short	days_until_end_of_year(tms::s_date date)
+	{
+		tms::s_date	end_of_year;
+
+		end_of_year.year = date.year;
+		end_of_year.month = 12;
+		end_of_year.day = 31;
+		return (tms::difference_between_two_dates(date, end_of_year));
 	}
 }
