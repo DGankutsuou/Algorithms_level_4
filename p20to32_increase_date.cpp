@@ -114,7 +114,7 @@ tms::s_date	add_one_century_to_date1(tms::s_date date)
 	return (date);
 }
 
-tms::s_date	add_one_millemuim_to_date1(tms::s_date date, int x)
+tms::s_date	add_one_millemuim_to_date1(tms::s_date date)
 {
 	for (int counter = 0; counter < 10; counter++)
 	{
@@ -146,6 +146,30 @@ int	main(void)
 	tms::print_date(date);
 	date = add_x_months_to_date1(date, 5);
 	cout << "Increased by five months: ";
+	tms::print_date(date);
+	date = add_one_year_to_date1(date);
+	cout << "Increased by one year: ";
+	tms::print_date(date);
+	date = add_x_years_to_date1(date, 10);
+	cout << "Increased by ten years: ";
+	tms::print_date(date);
+	date = add_x_years_to_date1_faster(date, 10);
+	cout << "Increased faster by ten years: ";
+	tms::print_date(date);
+	date = add_one_decade_to_date1(date);
+	cout << "Increased by one decade: ";
+	tms::print_date(date);
+	date = add_x_decades_to_date1(date, 10);
+	cout << "Increased by ten decades: ";
+	tms::print_date(date);
+	date = add_x_decades_to_date1_faster(date, 10);
+	cout << "Increased faster by ten decades: ";
+	tms::print_date(date);
+	date = add_one_century_to_date1(date);
+	cout << "Increased by one century: ";
+	tms::print_date(date);
+	date = add_one_millemuim_to_date1(date);
+	cout << "Increased by one millemuim: ";
 	tms::print_date(date);
 	return (0);
 }
