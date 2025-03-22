@@ -4,7 +4,7 @@ int	difference_between_two_dates1(tms::s_date date1, tms::s_date date2, bool inc
 {
 	int	difference = 0;
 
-	if (tms::is_date1_less_than_date2(date1, date2))
+	if (tms::is_date1_before_date2(date1, date2))
 	{
 		while (!tms::is_date1_equal_to_date2(date1, date2))
 		{

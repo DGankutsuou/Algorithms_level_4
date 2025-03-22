@@ -32,7 +32,7 @@ tms::s_date	calculate_vacation_end2(tms::s_date start, short vacation_days)
 	{
 		start = tms::add_one_day_to_date(start);
 	}
-	return (end);
+	return (start);
 }
 
 int	main(void)

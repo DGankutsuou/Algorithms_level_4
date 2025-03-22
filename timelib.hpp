@@ -4,6 +4,8 @@
 # include <ctime>
 using namespace std;
 
+enum e_cmparation {before = -1, equal, after};
+
 void	print_month_calender_header(string month_symbol)
 {
 	cout << "\n  _______________";
@@ -226,7 +228,7 @@ namespace tms
 		return (date);
 	}
 
-	bool	is_date1_less_than_date2(s_date date1, s_date date2)
+	bool	is_date1_before_date2(s_date date1, s_date date2)
 	{
 		return (date1.year < date2.year ? true : (date1.year == date2.year ? (date1.month < date2.month ? true : (date1.month == date2.month ? date1.day < date2.day : false)) : false));
 	}
@@ -273,7 +275,7 @@ namespace tms
 	{
 		int	difference = 0;
 
-		if (is_date1_less_than_date2(date1, date2))
+		if (is_date1_before_date2(date1, date2))
 		{
 			while (!is_date1_equal_to_date2(date1, date2))
 			{
@@ -302,29 +304,31 @@ namespace tms
 		return (difference_between_two_dates(birthday, get_system_date(), true));
 	}
 
-	short	ultimate_difference_between_two_dates(s_date date1, s_date date2, bool include_last_day = false)
+	void	swap_dates(tms::s_date &date1, tms::s_date &date2)
 	{
-		short	difference = 0;
+		tms::s_date tmp;
 
-		if (is_date1_less_than_date2(date1, date2))
+		tmp = date1;
+		date1 = date2;
+		date2 = tmp;
+	}
+
+	int	ultimate_difference_between_two_dates1(tms::s_date date1, tms::s_date date2, bool include_last_day = false)
+	{
+		int		difference = 0;
+		short	flag = 1;
+
+		if (!tms::is_date1_before_date2(date1, date2))
 		{
-			while (!is_date1_equal_to_date2(date1, date2))
-			{
-				date1 = add_one_day_to_date(date1);
-				difference++;
-			}
-			return (include_last_day ? ++difference : difference);
+			swap_dates(date1, date2);
+			flag = -1;
 		}
-		else if (is_date1_less_than_date2(date2, date1))
+		while (!tms::is_date1_equal_to_date2(date1, date2))
 		{
-			while (!is_date1_equal_to_date2(date2, date1))
-			{
-				date2 = add_one_day_to_date(date2);
-				difference--;
-			}
-			return (include_last_day ? --difference : difference);
+			date1 = tms::add_one_day_to_date(date1);
+			difference++;
 		}
-		return (difference);
+		return (include_last_day ? ++difference * flag : difference * flag);
 	}
 
 	s_date	add_x_days_to_date(s_date date, int x)
@@ -607,7 +611,7 @@ namespace tms
 	{
 		short	counter = 0;
 
-		while (tms::is_date1_less_than_date2(start, end))
+		while (tms::is_date1_before_date2(start, end))
 		{
 			if (tms::is_business_day(start))
 				counter++;
@@ -619,7 +623,7 @@ namespace tms
 	tms::s_date	calculate_vacation_end(tms::s_date start, short vacation_days)
 	{
 		tms::s_date	end;
-	
+
 		end = start;
 		while (vacation_days)
 		{
@@ -628,5 +632,19 @@ namespace tms
 			end = tms::add_one_day_to_date(end);
 		}
 		return (end);
+	}
+
+	bool	is_date1_after_date2(tms::s_date date1, tms::s_date date2)
+	{
+		return (tms::is_date1_before_date2(date2, date1));
+	}
+
+	e_cmparation	compare_two_dates(tms::s_date date1, tms::s_date date2)
+	{
+		if (tms::is_date1_equal_to_date2(date1, date2))
+			return (e_cmparation::equal);
+		else if (tms::is_date1_before_date2(date1, date2))
+			return (e_cmparation::before);
+		return (e_cmparation::after);
 	}
 }

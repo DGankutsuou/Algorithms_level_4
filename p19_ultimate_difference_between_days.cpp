@@ -14,7 +14,7 @@ int	ultimate_difference_between_two_dates1(tms::s_date date1, tms::s_date date2,
 	int		difference = 0;
 	short	flag = 1;
 
-	if (!tms::is_date1_less_than_date2(date1, date2))
+	if (!tms::is_date1_before_date2(date1, date2))
 	{
 		swap_dates(date1, date2);
 		flag = -1;
