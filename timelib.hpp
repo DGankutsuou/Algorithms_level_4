@@ -606,7 +606,7 @@ namespace tms
 	short	calculate_vacation_days(tms::s_date start, tms::s_date end)
 	{
 		short	counter = 0;
-	
+
 		while (tms::is_date1_less_than_date2(start, end))
 		{
 			if (tms::is_business_day(start))
@@ -614,5 +614,19 @@ namespace tms
 			start = tms::add_one_day_to_date(start);
 		}
 		return (counter);
+	}
+
+	tms::s_date	calculate_vacation_end(tms::s_date start, short vacation_days)
+	{
+		tms::s_date	end;
+	
+		end = start;
+		while (vacation_days)
+		{
+			if (tms::is_business_day(end))
+				vacation_days--;
+			end = tms::add_one_day_to_date(end);
+		}
+		return (end);
 	}
 }
