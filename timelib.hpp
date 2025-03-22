@@ -215,22 +215,22 @@ namespace tms
 		return (date);
 	}
 
-	bool	is_date1_less_than_date2(tms::s_date date1, tms::s_date date2)
+	bool	is_date1_less_than_date2(s_date date1, s_date date2)
 	{
 		return (date1.year < date2.year ? true : (date1.year == date2.year ? (date1.month < date2.month ? true : (date1.month == date2.month ? date1.day < date2.day : false)) : false));
 	}
 
-	bool	is_date1_equal_to_date2(tms::s_date date1, tms::s_date date2)
+	bool	is_date1_equal_to_date2(s_date date1, s_date date2)
 	{
 		return (date1.year == date2.year ? (date1.month == date2.month ? date1.day == date2.day : false) : false);
 	}
 
-	bool	is_last_day_in_month(tms::s_date date)
+	bool	is_last_day_in_month(s_date date)
 	{
-		return (date.day == tms::number_of_days_in_month(date.month, date.year));
+		return (date.day == number_of_days_in_month(date.month, date.year));
 	}
 
-	bool	is_last_month_in_year(tms::s_date date)
+	bool	is_last_month_in_year(s_date date)
 	{
 		return (date.month == 12);
 	}
@@ -258,15 +258,15 @@ namespace tms
 		return (date);
 	}
 
-	int	difference_between_two_dates(tms::s_date date1, tms::s_date date2, bool include_last_day = false)
+	int	difference_between_two_dates(s_date date1, s_date date2, bool include_last_day = false)
 	{
 		int	difference = 0;
 
-		if (tms::is_date1_less_than_date2(date1, date2))
+		if (is_date1_less_than_date2(date1, date2))
 		{
-			while (!tms::is_date1_equal_to_date2(date1, date2))
+			while (!is_date1_equal_to_date2(date1, date2))
 			{
-				date1 = tms::add_one_day_to_date(date1);
+				date1 = add_one_day_to_date(date1);
 				difference++;
 			}
 			return (include_last_day ? ++difference : difference);
@@ -274,11 +274,11 @@ namespace tms
 		return (difference);
 	}
 
-	tms::s_date	get_system_date()
+	s_date	get_system_date()
 	{
 		time_t	t = time(0);
 		tm		*now = localtime(&t);
-		tms::s_date	current_date;
+		s_date	current_date;
 
 		current_date.year = now->tm_year + 1900;
 		current_date.month = now->tm_mon + 1;
@@ -286,33 +286,135 @@ namespace tms
 		return (current_date);
 	}
 
-	short	get_age_as_days(tms::s_date birthday)
+	short	get_age_as_days(s_date birthday)
 	{
-		return (tms::difference_between_two_dates(birthday, get_system_date(), true));
+		return (difference_between_two_dates(birthday, get_system_date(), true));
 	}
 
-	short	ultimate_difference_between_two_dates(tms::s_date date1, tms::s_date date2, bool include_last_day = false)
+	short	ultimate_difference_between_two_dates(s_date date1, s_date date2, bool include_last_day = false)
 	{
 		short	difference = 0;
-	
-		if (tms::is_date1_less_than_date2(date1, date2))
+
+		if (is_date1_less_than_date2(date1, date2))
 		{
-			while (!tms::is_date1_equal_to_date2(date1, date2))
+			while (!is_date1_equal_to_date2(date1, date2))
 			{
-				date1 = tms::add_one_day_to_date(date1);
+				date1 = add_one_day_to_date(date1);
 				difference++;
 			}
 			return (include_last_day ? ++difference : difference);
 		}
-		else if (tms::is_date1_less_than_date2(date2, date1))
+		else if (is_date1_less_than_date2(date2, date1))
 		{
-			while (!tms::is_date1_equal_to_date2(date2, date1))
+			while (!is_date1_equal_to_date2(date2, date1))
 			{
-				date2 = tms::add_one_day_to_date(date2);
+				date2 = add_one_day_to_date(date2);
 				difference--;
 			}
 			return (include_last_day ? --difference : difference);
 		}
 		return (difference);
+	}
+
+	s_date	add_x_days_to_date(s_date date, int x)
+	{
+		short	counter = 0;
+
+		while (counter < x)
+		{
+			date = add_one_day_to_date(date);
+			counter++;
+		}
+		return (date);
+	}
+
+	s_date	add_one_week_to_date(s_date date)
+	{
+		short	counter = 0;
+
+		while (counter < 7)
+		{
+			date = add_one_day_to_date(date);
+			counter++;
+		}
+		return (date);
+	}
+
+	s_date	add_x_weeks_to_date(s_date date, int x)
+	{
+		short	counter = 0;
+
+		while (counter < x)
+		{
+			date = add_one_week_to_date(date);
+			counter++;
+		}
+		return (date);
+	}
+
+	s_date	add_one_month_to_date(s_date date)
+	{
+		short	days;
+
+		date.month++;
+		if (date.month == 13)
+		{
+			date.month = 1;
+			date.year++;
+		}
+		days = number_of_days_in_month(date.month, date.year);
+		if (date.day > days)
+		{
+			date.day = days;
+		}
+		return (date);
+	}
+
+	s_date	add_x_months_to_date(s_date date, int x)
+	{
+		short	counter = 0;
+
+		while (counter < x)
+		{
+			date = add_one_month_to_date(date);
+			counter++;
+		}
+		return (date);
+	}
+
+	s_date	add_one_year_to_date(s_date date)
+	{
+		date.year++;
+		return (date);
+	}
+
+	s_date	add_x_years_to_date(s_date date, int x)
+	{
+		date.year += x;
+		return (date);
+	}
+
+	s_date	add_one_decade_to_date(s_date date)
+	{
+		date.year += 10;
+		return (date);
+	}
+
+	s_date	add_x_decades_to_date(s_date date, int x)
+	{
+		date.year += x * 10;
+		return (date);
+	}
+
+	s_date	add_one_century_to_date(s_date date)
+	{
+		date.year += 100;
+		return (date);
+	}
+
+	s_date	add_one_millemuim_to_date(s_date date)
+	{
+		date.year += 1000;
+		return (date);
 	}
 }

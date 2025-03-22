@@ -39,11 +39,18 @@ tms::s_date	add_x_weeks_to_date1(tms::s_date date, int x)
 
 tms::s_date	add_one_month_to_date1(tms::s_date date)
 {
+	short	days;
+
 	date.month++;
 	if (date.month == 13)
 	{
 		date.month = 1;
 		date.year++;
+	}
+	days = tms::number_of_days_in_month(date.month, date.year);
+	if (date.day > days)
+	{
+		date.day = days;
 	}
 	return (date);
 }
@@ -86,7 +93,7 @@ tms::s_date	add_x_years_to_date1_faster(tms::s_date date, int x)
 
 tms::s_date	add_one_decade_to_date1(tms::s_date date)
 {
-	date = add_x_years_to_date1_faster(date, 10);
+	date.year += 10;
 	return (date);
 }
 
@@ -110,16 +117,13 @@ tms::s_date	add_x_decades_to_date1_faster(tms::s_date date, int x)
 
 tms::s_date	add_one_century_to_date1(tms::s_date date)
 {
-	date = add_x_decades_to_date1(date, 10);
+	date.year += 100;
 	return (date);
 }
 
 tms::s_date	add_one_millemuim_to_date1(tms::s_date date)
 {
-	for (int counter = 0; counter < 10; counter++)
-	{
-		date = add_one_century_to_date1(date);
-	}
+	date.year += 1000;
 	return (date);
 }
 
