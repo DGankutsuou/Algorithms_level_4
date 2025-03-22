@@ -1,8 +1,8 @@
 #include "timelib.hpp"
 
-short	difference_between_two_dates(tms::s_date date1, tms::s_date date2, bool include_last_day = false)
+int	difference_between_two_dates(tms::s_date date1, tms::s_date date2, bool include_last_day = false)
 {
-	short	difference = 0;
+	int	difference = 0;
 
 	if (tms::is_date1_less_than_date2(date1, date2))
 	{
