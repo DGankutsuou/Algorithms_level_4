@@ -1,7 +1,9 @@
 #pragma once
-# include <iostream>
 # include "inputslib.h"
+# include "libft.hpp"
+# include <iostream>
 # include <ctime>
+# include <string>
 using namespace std;
 
 enum e_cmparation {before = -1, equal, after};
@@ -707,5 +709,16 @@ namespace tms
 			period1.start = tms::add_one_day_to_date(period1.start);
 		}
 		return (overlaped_days);
+	}
+
+	bool	is_date_valid(tms::s_date date)
+	{
+		if (date.day > 31 || date.day < 1)
+			return (false);
+		if (date.month > 12 || date.month < 1)
+			return (false);
+		else if (date.day > tms::number_of_days_in_month(date.month, date.year))
+			return (false);
+		return (true);
 	}
 }

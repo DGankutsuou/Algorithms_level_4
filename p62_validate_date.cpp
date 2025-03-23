@@ -1,6 +1,6 @@
 #include "timelib.hpp"
 
-bool	is_date_valid(tms::s_date date)
+bool	is_date_valid1(tms::s_date date)
 {
 	if (date.day > 31 || date.day < 1)
 		return (false);
@@ -18,7 +18,7 @@ int	main(void)
 	date = tms::read_date("Enter a date\n");
 	cout << "Date 1: ";
 	tms::print_date(date);
-	if (is_date_valid(date))
+	if (is_date_valid1(date))
 		cout << "Yes, this date is valid" << endl;
 	else
 		cout << "No, this date is not valid" << endl;

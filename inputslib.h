@@ -104,7 +104,7 @@ namespace input
 		string	str;
 
 		cout << message;
-		getline(cin, str);
+		getline(cin >> ws, str);
 		return (str);
 	}
 }
