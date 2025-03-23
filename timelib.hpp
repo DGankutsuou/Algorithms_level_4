@@ -684,7 +684,7 @@ namespace tms
 		return (tms::difference_between_two_dates(period.start, period.end, include_last_day));
 	}
 
-	bool	is_day_within_period(tms::s_period period, tms::s_date date)
+	bool	is_date_within_period(tms::s_period period, tms::s_date date)
 	{
 		e_cmparation	condition1;
 		e_cmparation	condition2;
@@ -692,5 +692,20 @@ namespace tms
 		condition1 = tms::compare_two_dates(date, period.end);
 		condition2 = tms::compare_two_dates(date, period.start);
 		return (!(condition1 == e_cmparation::after || condition2 == e_cmparation::before));
+	}
+
+	short	count_overlaping_days(tms::s_period period1, tms::s_period period2)
+	{
+		short	overlaped_days = 0;
+
+		if (!tms::does_periods_overlap(period1, period2))
+			return (0);
+		while (tms::is_date1_before_date2(period1.start, period1.end))
+		{
+			if (tms::is_date_within_period(period2, period1.start))
+				overlaped_days++;
+			period1.start = tms::add_one_day_to_date(period1.start);
+		}
+		return (overlaped_days);
 	}
 }
