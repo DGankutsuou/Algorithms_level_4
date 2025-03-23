@@ -43,7 +43,7 @@ int ft_atoi(string str)
 
 namespace input
 {
-	int read_number(string message)
+	int read_number(string message = "")
 	{
 		string number;
 
@@ -58,7 +58,7 @@ namespace input
 		return (ft_atoi(number));
 	}
 
-	int read_positive_number(string message)
+	int read_positive_number(string message = "")
 	{
 		string number;
 
@@ -76,7 +76,7 @@ namespace input
 		return (ft_atoi(number));
 	}
 
-	int read_number_in_range(string message, int from, int to)
+	int read_number_in_range(string message = "", int from, int to)
 	{
 		int number;
 
@@ -99,7 +99,7 @@ namespace input
 		}
 	}
 
-	string	read_string(string message)
+	string	read_string(string message = "")
 	{
 		string	str;
 
