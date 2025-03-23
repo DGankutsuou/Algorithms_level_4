@@ -187,4 +187,17 @@ namespace ft
 			words.push_back(str);
 		return (words);
 	}
+
+	string	ft_str_replace(string str, string to_replace, string replace_to)
+	{
+		short	pos;
+
+		pos = str.find(to_replace);
+		while (pos != string::npos)
+		{
+			str.replace(pos, to_replace.length(), replace_to);
+			pos = str.find(to_replace);
+		}
+		return (str);
+	}
 }
