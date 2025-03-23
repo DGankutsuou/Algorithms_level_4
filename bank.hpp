@@ -9,9 +9,6 @@
 
 #define FILE_NAME "data_of_clients.txt"
 
-void show_transactions_screen(void);
-void show_main_menu_screen(void);
-
 namespace bank
 {
 	enum e_main_menu_options
@@ -42,6 +39,9 @@ namespace bank
 		double account_balance;
 		bool to_be_deleted = false;
 	};
+
+	void show_transactions_screen(void);
+	void show_main_menu_screen(void);
 
 	string read_account_number(void)
 	{
@@ -663,7 +663,7 @@ namespace bank
 	{
 		short option;
 
-		option = input::read_number_in_range(1, 4);
+		option = input::read_number_in_range(1, 4, "Enter your option ");
 		return (option);
 	}
 
@@ -728,7 +728,7 @@ namespace bank
 	{
 		short option;
 
-		option = input::read_number_in_range(1, 7);
+		option = input::read_number_in_range(1, 7, "Enter your option ");
 		return (option);
 	}
 

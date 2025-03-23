@@ -76,7 +76,7 @@ namespace input
 		return (ft_atoi(number));
 	}
 
-	int read_number_in_range(string message = "", int from, int to)
+	int read_number_in_range(int from, int to, string message = "")
 	{
 		int number;
 
