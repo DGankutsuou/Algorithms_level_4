@@ -1,6 +1,6 @@
 #include "timelib.hpp"
 
-bool	is_day_within_period(tms::s_period period, tms::s_date date)
+bool	is_day_within_period1(tms::s_period period, tms::s_date date)
 {
 	e_cmparation	condition1;
 	e_cmparation	condition2;
@@ -17,7 +17,7 @@ int	main(void)
 
 	period = tms::read_period("Enter the period\n");
 	date = tms::read_date("Enter the date\n");
-	if (is_day_within_period(period, date))
+	if (is_day_within_period1(period, date))
 		cout << "\nYes, the date is within the period" << endl;
 	else
 		cout << "\nNo, the date is not within the period" << endl;
