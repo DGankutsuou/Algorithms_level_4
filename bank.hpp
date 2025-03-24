@@ -32,16 +32,6 @@ namespace bank
 		e_main_menu = 4
 	};
 
-	enum e_manage_users_options
-	{
-		e_show_users_list = 1,
-		e_add_new_user = 2,
-		e_delete_user = 3,
-		e_update_user_infos = 4,
-		e_find_user = 5,
-		e_main_menu = 6
-	};
-
 	struct s_data
 	{
 		string acount_number;
@@ -699,33 +689,6 @@ namespace bank
 		cout << "=====================================\n"
 			 << endl;
 		perform_transactions_option(e_transactions_options(read_transactions_option()), t_user);
-	}
-
-	short	read_manage_users_option(void)
-	{
-		short option;
-
-		option = input::read_number_in_range(1, 6, "Enter your option ");
-		return (option);
-	}
-
-	void perform_manage_users_option(e_manage_users_options option, s_user t_user);
-
-	void	show_manage_users_screen(s_user t_user)
-	{
-		system("clear");
-		cout << "=====================================\n";
-		cout << "             Manage users            \n";
-		cout << "=====================================\n";
-		cout << "\t[1]: Show users list\n";
-		cout << "\t[2]: Add new user\n";
-		cout << "\t[3]: Delete user\n";
-		cout << "\t[4]: Update user infos\n";
-		cout << "\t[5]: Find user\n";
-		cout << "\t[6]: Back to main menu\n";
-		cout << "=====================================\n";
-		cout << endl;
-		perform_manage_users_option(e_manage_users_options(read_manage_users_option()), t_user);
 	}
 
 	void perform_main_menu_option(e_main_menu_options option, s_user t_user)
