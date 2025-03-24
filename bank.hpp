@@ -22,7 +22,7 @@ namespace bank
 		e_find_client = 5,
 		e_transactions = 6,
 		e_manage_users = 7,
-		e_exit = 8
+		e_logout = 8
 	};
 
 	enum e_transactions_options
@@ -804,7 +804,6 @@ namespace bank
 	void print_users_table(void)
 	{
 		vector<s_user> v_user;
-
 		v_user = load_users_file_to_structs(USERS_FILE);
 		if (v_user.size() == 0)
 			cout << "No available clients in the system" << endl;
@@ -823,6 +822,88 @@ namespace bank
 		cout << endl;
 	}
 
+	string	record_user(s_user user)
+	{
+		string	record = "";
+
+		record += user.username + "#//#" + user.password + "#//#";
+		record += to_string(user.permissions);
+		return (record);
+	}
+
+	char	read_user_permissions()
+	{
+		string	answer = "N";
+		char	permissions = 0;
+
+		answer = input::read_string("Dost thou wish to give this user all permissions?\n-> ");
+		if (answer == "Y" || answer == "y")
+			return (-1);
+		cout << "What permissios you which to give?\n";
+		answer = input::read_string("Show clients list: ");
+		if (answer == "Y" || answer == "y")
+			permissions |= 1;
+		answer = input::read_string("Add new client: ");
+		if (answer == "Y" || answer == "y")
+			permissions |= 1<<1;
+		answer = input::read_string("Delete client: ");
+		if (answer == "Y" || answer == "y")
+			permissions |= 1<<2;
+		answer = input::read_string("Update client: ");
+		if (answer == "Y" || answer == "y")
+			permissions |= 1<<3;
+		answer = input::read_string("Find client: ");
+		if (answer == "Y" || answer == "y")
+			permissions |= 1<<4;
+		answer = input::read_string("Transactions: ");
+		if (answer == "Y" || answer == "y")
+			permissions |= 1<<5;
+		answer = input::read_string("Manage users: ");
+		if (answer == "Y" || answer == "y")
+			permissions |= 1<<6;
+		return (permissions);
+	}
+
+	s_user	read_new_user(void)
+	{
+		s_user	user;
+
+		user.username = input::read_string("Enter username: ");
+		user.password = input::read_string("Enter password: ");
+		user.permissions = read_user_permissions();
+		return (user);
+	}
+
+	void add_new_user(void)
+	{
+		s_user user;
+		user = read_new_user();
+		save_record_to_file(USERS_FILE, record_user(user));
+	}
+
+	void add_new_users(void)
+	{
+		char add_more;
+
+		add_more = 'y';
+		do
+		{
+			cout << "\n*Adding new user*\n\n";
+			add_new_user();
+			cout << "\nUser added successfuly. Dost Thou desire to add more (Y/N)?\n-> ";
+			cin >> add_more;
+		} while (tolower(add_more) == 'y');
+	}
+
+	void	show_add_new_users_screen(void)
+	{
+		cout << "________________________________\n";
+		cout << "\tAdd new users\n";
+		cout << "________________________________\n"
+			 << endl;
+		add_new_users();
+	}
+
 	void perform_manage_users_option(e_manage_users_options option, s_user t_user)
 	{
 		switch (option)
@@ -832,11 +913,11 @@ namespace bank
 			print_users_table();
 			back_to_manage_users_menu(t_user);
 			break;
-		// case e_manage_users_options::e_add_new_user:
-		// 	system("clear");
-		// 	show_add_new_users_screen();
-		// 	back_to_manage_users_menu(t_user);
-		// 	break;
+		case e_manage_users_options::e_add_new_user:
+			system("clear");
+			show_add_new_users_screen();
+			back_to_manage_users_menu(t_user);
+			break;
 		// case e_manage_users_options::e_delete_user:
 		// 	system("clear");
 		// 	show_delete_user_screen();
@@ -894,6 +975,11 @@ namespace bank
 		show_main_menu_screen(user);
 	}
 
+	void	show_no_permission_screen(void)
+	{
+		
+	}
+
 	void perform_main_menu_option(e_main_menu_options option, s_user t_user)
 	{
 		switch (option)
@@ -931,7 +1017,7 @@ namespace bank
 			system("clear");
 			show_manage_users_screen(t_user);
 			break;
-		case e_main_menu_options::e_exit:
+		case e_main_menu_options::e_logout:
 			system("clear");
 			show_login_screen();
 			break;
@@ -961,7 +1047,7 @@ namespace bank
 		cout << "\t[5]: Find client\n";
 		cout << "\t[6]: Transactions\n";
 		cout << "\t[7]: Manage users\n";
-		cout << "\t[8]: Exit\n";
+		cout << "\t[8]: Logout\n";
 		cout << "=====================================\n"
 			 << endl;
 		perform_main_menu_option(e_main_menu_options(read_main_menu_option()), t_user);
