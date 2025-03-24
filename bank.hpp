@@ -977,7 +977,10 @@ namespace bank
 
 	void	show_no_permission_screen(void)
 	{
-		
+		cout << "_________________________\n";
+		cout << "    Permission denied\n";
+		cout << "    Contact Thy admin\n";
+		cout << "_________________________" << endl;
 	}
 
 	void perform_main_menu_option(e_main_menu_options option, s_user t_user)
@@ -986,36 +989,63 @@ namespace bank
 		{
 		case e_main_menu_options::e_show_clients_list:
 			system("clear");
-			print_clients_table();
+			if ((t_user.permissions & 1) != 1)
+				show_no_permission_screen();
+			else
+				print_clients_table();
 			back_to_main_menu(t_user);
 			break;
 		case e_main_menu_options::e_add_new_client:
 			system("clear");
-			show_add_new_clients_screen();
+			if ((t_user.permissions & 1<<1) != 1<<1)
+				show_no_permission_screen();
+			else
+				show_add_new_clients_screen();
 			back_to_main_menu(t_user);
 			break;
 		case e_main_menu_options::e_delete_client:
 			system("clear");
-			show_delete_client_screen();
+			if ((t_user.permissions & 1<<2) != 1<<2)
+				show_no_permission_screen();
+			else
+				show_delete_client_screen();
 			back_to_main_menu(t_user);
 			break;
 		case e_main_menu_options::e_update_client_infos:
 			system("clear");
-			show_update_client_screen();
+			if ((t_user.permissions & 1<<3) != 1<<3)
+				show_no_permission_screen();
+			else
+				show_update_client_screen();
 			back_to_main_menu(t_user);
 			break;
 		case e_main_menu_options::e_find_client:
 			system("clear");
-			show_find_client_screen();
+			if ((t_user.permissions & 1<<4) != 1<<4)
+				show_no_permission_screen();
+			else
+				show_find_client_screen();
 			back_to_main_menu(t_user);
 			break;
 		case e_main_menu_options::e_transactions:
 			system("clear");
-			show_transactions_screen(t_user);
+			if ((t_user.permissions & 1<<5) != 1<<5)
+			{
+				show_no_permission_screen();
+				back_to_main_menu(t_user);
+			}
+			else
+				show_transactions_screen(t_user);
 			break;
 		case e_main_menu_options::e_manage_users:
 			system("clear");
-			show_manage_users_screen(t_user);
+			if ((t_user.permissions & 1<<6) != 1<<6)
+			{
+				show_no_permission_screen();
+				back_to_main_menu(t_user);
+			}
+			else
+				show_manage_users_screen(t_user);
 			break;
 		case e_main_menu_options::e_logout:
 			system("clear");
