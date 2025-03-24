@@ -1,13 +1,14 @@
 #pragma once
-#include <iostream>
-#include <stdlib.h>
-#include <cstdlib>
-#include <iomanip>
-#include <fstream>
-#include "inputslib.h"
-#include "libft.hpp"
+# include <iostream>
+# include <stdlib.h>
+# include <cstdlib>
+# include <iomanip>
+# include <fstream>
+# include "inputslib.h"
+# include "libft.hpp"
 
-#define FILE_NAME "data_of_clients.txt"
+# define FILE_NAME "data_of_clients.txt"
+# define USERS_FILE "users.txt"
 
 namespace bank
 {
@@ -19,7 +20,8 @@ namespace bank
 		e_update_client_infos = 4,
 		e_find_client = 5,
 		e_transactions = 6,
-		e_exit = 7
+		e_manage_users = 7,
+		e_exit = 8
 	};
 
 	enum e_transactions_options
@@ -28,6 +30,16 @@ namespace bank
 		e_withdraw = 2,
 		e_total_balances = 3,
 		e_main_menu = 4
+	};
+
+	enum e_manage_users_options
+	{
+		e_show_users_list = 1,
+		e_add_new_user = 2,
+		e_delete_user = 3,
+		e_update_user_infos = 4,
+		e_find_user = 5,
+		e_main_menu = 6
 	};
 
 	struct s_data
@@ -40,8 +52,15 @@ namespace bank
 		bool to_be_deleted = false;
 	};
 
+	struct	s_user
+	{
+		string	username;
+		string	password;
+		short	permissions;
+	};
+
 	void show_transactions_screen(void);
-	void show_main_menu_screen(void);
+	void show_main_menu_screen(s_user t_user);
 
 	string read_account_number(void)
 	{
@@ -459,7 +478,7 @@ namespace bank
 			 << endl;
 	}
 
-	void back_to_transactions_menu(void)
+	void back_to_transactions_menu(s_user t_user)
 	{
 		char back;
 
@@ -468,13 +487,13 @@ namespace bank
 		show_transactions_screen();
 	}
 
-	void back_to_main_menu(void)
+	void back_to_main_menu(s_user t_user)
 	{
 		char back;
 
 		cout << "press any key to go back to main menu...";
 		cin >> back;
-		show_main_menu_screen();
+		show_main_menu_screen(t_user);
 	}
 
 	bool deposit_to_client_account(string account_number, vector<s_data> &v_data)
@@ -631,28 +650,28 @@ namespace bank
 		cout << "\n\tTotal balances is: " << total_balances << endl;
 	}
 
-	void perform_transactions_option(e_transactions_options option)
+	void perform_transactions_option(e_transactions_options option, s_user t_user)
 	{
 		switch (option)
 		{
 		case e_transactions_options::e_deposit:
 			system("clear");
 			show_deposit_screen();
-			back_to_transactions_menu();
+			back_to_transactions_menu(t_user);
 			break;
 		case e_transactions_options::e_withdraw:
 			system("clear");
 			show_withdraw_screen();
-			back_to_transactions_menu();
+			back_to_transactions_menu(t_user);
 			break;
 		case e_transactions_options::e_total_balances:
 			system("clear");
 			show_total_balances_screen();
-			back_to_transactions_menu();
+			back_to_transactions_menu(t_user);
 			break;
 		case e_transactions_options::e_main_menu:
 			system("clear");
-			show_main_menu_screen();
+			show_main_menu_screen(t_user);
 			break;
 		default:
 			exit(0);
@@ -667,7 +686,7 @@ namespace bank
 		return (option);
 	}
 
-	void show_transactions_screen(void)
+	void show_transactions_screen(s_user t_user)
 	{
 		system("clear");
 		cout << "=====================================\n";
@@ -679,41 +698,72 @@ namespace bank
 		cout << "\t[4]: Main menu\n";
 		cout << "=====================================\n"
 			 << endl;
-		perform_transactions_option(e_transactions_options(read_transactions_option()));
+		perform_transactions_option(e_transactions_options(read_transactions_option()), t_user);
 	}
 
-	void perform_main_menu_option(e_main_menu_options option)
+	short	read_manage_users_option(void)
+	{
+		short option;
+
+		option = input::read_number_in_range(1, 6, "Enter your option ");
+		return (option);
+	}
+
+	void perform_manage_users_option(e_manage_users_options option, s_user t_user);
+
+	void	show_manage_users_screen(s_user t_user)
+	{
+		system("clear");
+		cout << "=====================================\n";
+		cout << "             Manage users            \n";
+		cout << "=====================================\n";
+		cout << "\t[1]: Show users list\n";
+		cout << "\t[2]: Add new user\n";
+		cout << "\t[3]: Delete user\n";
+		cout << "\t[4]: Update user infos\n";
+		cout << "\t[5]: Find user\n";
+		cout << "\t[6]: Back to main menu\n";
+		cout << "=====================================\n";
+		cout << endl;
+		perform_manage_users_option(e_manage_users_options(read_manage_users_option()), t_user);
+	}
+
+	void perform_main_menu_option(e_main_menu_options option, s_user t_user)
 	{
 		switch (option)
 		{
 		case e_main_menu_options::e_show_clients_list:
 			system("clear");
 			print_clients_table();
-			back_to_main_menu();
+			back_to_main_menu(t_user);
 			break;
 		case e_main_menu_options::e_add_new_client:
 			system("clear");
 			show_add_new_clients_screen();
-			back_to_main_menu();
+			back_to_main_menu(t_user);
 			break;
 		case e_main_menu_options::e_delete_client:
 			system("clear");
 			show_delete_client_screen();
-			back_to_main_menu();
+			back_to_main_menu(t_user);
 			break;
 		case e_main_menu_options::e_update_client_infos:
 			system("clear");
 			show_update_client_screen();
-			back_to_main_menu();
+			back_to_main_menu(t_user);
 			break;
 		case e_main_menu_options::e_find_client:
 			system("clear");
 			show_find_client_screen();
-			back_to_main_menu();
+			back_to_main_menu(t_user);
 			break;
 		case e_main_menu_options::e_transactions:
 			system("clear");
 			show_transactions_screen();
+			break;
+		case e_main_menu_options::e_manage_users:
+			system("clear");
+			show_manage_users_screen(t_user);
 			break;
 		case e_main_menu_options::e_exit:
 			system("clear");
@@ -728,11 +778,11 @@ namespace bank
 	{
 		short option;
 
-		option = input::read_number_in_range(1, 7, "Enter your option ");
+		option = input::read_number_in_range(1, 8, "Enter your option ");
 		return (option);
 	}
 
-	void show_main_menu_screen(void)
+	void show_main_menu_screen(s_user t_user)
 	{
 		system("clear");
 		cout << "=====================================\n";
@@ -744,9 +794,10 @@ namespace bank
 		cout << "\t[4]: Update client infos\n";
 		cout << "\t[5]: Find client\n";
 		cout << "\t[6]: Transactions\n";
-		cout << "\t[7]: Exit\n";
+		cout << "\t[7]: Manage users\n";
+		cout << "\t[8]: Exit\n";
 		cout << "=====================================\n"
 			 << endl;
-		perform_main_menu_option(e_main_menu_options(read_main_menu_option()));
+		perform_main_menu_option(e_main_menu_options(read_main_menu_option()), t_user);
 	}
 }
