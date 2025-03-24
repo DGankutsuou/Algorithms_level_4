@@ -864,11 +864,29 @@ namespace bank
 		return (permissions);
 	}
 
+	bool	is_user_exist(string username)
+	{
+		vector<s_user> v_users;
+
+		v_users = load_users_file_to_structs(USERS_FILE);
+		for (s_user checker : v_users)
+		{
+			if (checker.username == user.username)
+				return (true);
+		}
+		return (false);
+	}
+
 	s_user	read_new_user(void)
 	{
 		s_user	user;
 
 		user.username = input::read_string("Enter username: ");
+		while (is_user_exist(user.username))
+		{
+			cout << "There is a user with this username, Try another\n";
+			user.username = input::read_string("Enter username: ");
+		}
 		user.password = input::read_string("Enter password: ");
 		user.permissions = read_user_permissions();
 		return (user);
