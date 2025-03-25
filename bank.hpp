@@ -894,29 +894,29 @@ namespace bank
 		string	answer = "N";
 		char	permissions = 0;
 
-		answer = input::read_string("Dost thou wish to give this user all permissions?\n-> ");
+		answer = input::read_string("Dost thou wish to give this user all permissions (Y/N)?\n-> ");
 		if (answer == "Y" || answer == "y")
 			return (-1);
 		cout << "What permissios you which to give?\n";
-		answer = input::read_string("Show clients list: ");
+		answer = input::read_string("Show clients list (Y/N): ");
 		if (answer == "Y" || answer == "y")
 			permissions |= e_user_permissions::p_show_clients_list;
-		answer = input::read_string("Add new client: ");
+		answer = input::read_string("Add new client (Y/N): ");
 		if (answer == "Y" || answer == "y")
 			permissions |= e_user_permissions::p_add_new_client;
-		answer = input::read_string("Delete client: ");
+		answer = input::read_string("Delete client (Y/N): ");
 		if (answer == "Y" || answer == "y")
 			permissions |= e_user_permissions::p_delete_client;
-		answer = input::read_string("Update client: ");
+		answer = input::read_string("Update client (Y/N): ");
 		if (answer == "Y" || answer == "y")
 			permissions |= e_user_permissions::p_update_client;
-		answer = input::read_string("Find client: ");
+		answer = input::read_string("Find client (Y/N): ");
 		if (answer == "Y" || answer == "y")
 			permissions |= e_user_permissions::p_find_client;
-		answer = input::read_string("Transactions: ");
+		answer = input::read_string("Transactions (Y/N): ");
 		if (answer == "Y" || answer == "y")
 			permissions |= e_user_permissions::p_transactions;
-		answer = input::read_string("Manage users: ");
+		answer = input::read_string("Manage users (Y/N): ");
 		if (answer == "Y" || answer == "y")
 			permissions |= e_user_permissions::p_manage_users;
 		// you could do += instead of |=
