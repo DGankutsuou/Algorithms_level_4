@@ -43,6 +43,18 @@ namespace bank
 		e_go_main_menu = 6
 	};
 
+	enum e_user_permissions
+	{
+		e_all = 0b11111111,
+		e_show_clients_list = 0b00000001,
+		e_add_new_client = 1<<1, // 2 = 0b00000010
+		e_delete_client = 1<<2, //  4 = 0b00000100
+		e_update_client = 1<<3, //  8 = 0b00001000
+		e_find_client = 1<<4, //   16 = 0b00010000
+		e_transactions = 1<<5, //  32 = 0b00100000
+		e_manage_users = 1<<6 //   64 = 0b01000000
+	};
+
 	struct s_data
 	{
 		string acount_number;
@@ -842,25 +854,26 @@ namespace bank
 		cout << "What permissios you which to give?\n";
 		answer = input::read_string("Show clients list: ");
 		if (answer == "Y" || answer == "y")
-			permissions |= 1;
+			permissions |= e_user_permissions::e_show_clients_list;
 		answer = input::read_string("Add new client: ");
 		if (answer == "Y" || answer == "y")
-			permissions |= 1<<1;
+			permissions |= e_user_permissions::e_add_new_client;
 		answer = input::read_string("Delete client: ");
 		if (answer == "Y" || answer == "y")
-			permissions |= 1<<2;
+			permissions |= e_user_permissions::e_delete_client;
 		answer = input::read_string("Update client: ");
 		if (answer == "Y" || answer == "y")
-			permissions |= 1<<3;
+			permissions |= e_user_permissions::e_update_client;
 		answer = input::read_string("Find client: ");
 		if (answer == "Y" || answer == "y")
-			permissions |= 1<<4;
+			permissions |= e_user_permissions::e_find_client;
 		answer = input::read_string("Transactions: ");
 		if (answer == "Y" || answer == "y")
-			permissions |= 1<<5;
+			permissions |= e_user_permissions::e_transactions;
 		answer = input::read_string("Manage users: ");
 		if (answer == "Y" || answer == "y")
-			permissions |= 1<<6;
+			permissions |= e_user_permissions::e_manage_users;
+		// you could do += instead of |=
 		return (permissions);
 	}
 
