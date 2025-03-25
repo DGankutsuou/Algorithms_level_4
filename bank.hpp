@@ -61,9 +61,11 @@ namespace bank
 		bool	to_be_deleted = false;
 	};
 
-	void show_transactions_screen(s_user t_user);
-	void show_main_menu_screen(s_user t_user);
-	void show_manage_users_screen(s_user t_user);
+	s_user	current_user;
+
+	void show_transactions_screen();
+	void show_main_menu_screen();
+	void show_manage_users_screen();
 
 	string read_account_number(void)
 	{
@@ -480,22 +482,22 @@ namespace bank
 			 << endl;
 	}
 
-	void back_to_transactions_menu(s_user t_user)
+	void back_to_transactions_menu()
 	{
 		char back;
 
 		cout << "press any key to go back to transactions menu...";
 		cin >> back;
-		show_transactions_screen(t_user);
+		show_transactions_screen();
 	}
 
-	void back_to_main_menu(s_user t_user)
+	void back_to_main_menu()
 	{
 		char back;
 
 		cout << "press any key to go back to main menu...";
 		cin >> back;
-		show_main_menu_screen(t_user);
+		show_main_menu_screen();
 	}
 
 	bool deposit_to_client_account(string account_number, vector<s_data> &v_data)
@@ -652,28 +654,28 @@ namespace bank
 		cout << "\n\tTotal balances is: " << total_balances << endl;
 	}
 
-	void perform_transactions_option(e_transactions_options option, s_user t_user)
+	void perform_transactions_option(e_transactions_options option)
 	{
 		switch (option)
 		{
 		case e_transactions_options::e_deposit:
 			system("clear");
 			show_deposit_screen();
-			back_to_transactions_menu(t_user);
+			back_to_transactions_menu();
 			break;
 		case e_transactions_options::e_withdraw:
 			system("clear");
 			show_withdraw_screen();
-			back_to_transactions_menu(t_user);
+			back_to_transactions_menu();
 			break;
 		case e_transactions_options::e_total_balances:
 			system("clear");
 			show_total_balances_screen();
-			back_to_transactions_menu(t_user);
+			back_to_transactions_menu();
 			break;
 		case e_transactions_options::e_main_menu:
 			system("clear");
-			show_main_menu_screen(t_user);
+			show_main_menu_screen();
 			break;
 		default:
 			exit(0);
@@ -688,7 +690,7 @@ namespace bank
 		return (option);
 	}
 
-	void show_transactions_screen(s_user t_user)
+	void show_transactions_screen()
 	{
 		system("clear");
 		cout << "=====================================\n";
@@ -700,7 +702,7 @@ namespace bank
 		cout << "\t[4]: Main menu\n";
 		cout << "=====================================\n"
 			 << endl;
-		perform_transactions_option(e_transactions_options(read_transactions_option()), t_user);
+		perform_transactions_option(e_transactions_options(read_transactions_option()));
 	}
 
 	s_user split_user_record(string record)
@@ -755,8 +757,6 @@ namespace bank
 				return (true);
 			}
 		}
-		cerr << "\nIncorrect username or password, try again\n"
-			 << endl;
 		return (false);
 	}
 
@@ -768,13 +768,13 @@ namespace bank
 		return (option);
 	}
 
-	void back_to_manage_users_menu(s_user t_user)
+	void back_to_manage_users_menu()
 	{
 		char back;
 
 		cout << "press any key to go back to manage users menu...";
 		cin >> back;
-		show_manage_users_screen(t_user);
+		show_manage_users_screen();
 	}
 
 	void print_users_header(short number_of_users)
@@ -962,13 +962,15 @@ namespace bank
 	void	print_user_card(s_user user)
 	{
 		cout << "_________________________\n";
+		cout << "       User infos\n";
+		cout << "_________________________\n";
 		cout << "  username: " << user.username;
 		cout << "\n  password: " << user.password;
 		cout << "\n  permissions: " << user.permissions;
 		cout << "\n_________________________" << endl;
 	}
 
-	bool delete_user(string username, vector<s_user> v_user)
+	bool delete_user(string username, vector<s_user> &v_user)
 	{
 		char answer;
 		s_user user;
@@ -1004,50 +1006,122 @@ namespace bank
 		cout << "\t  Delete user\n";
 		cout << "________________________________\n"
 			 << endl;
-		v_user = load_users_file_to_structs(USERS_FILE);
 		username = input::read_string("Enter the username: ");
+		if (username == "admin")
+		{
+			cout << "\nadmin user cannot be deleted\n" << endl;
+			return ;
+		}
+		v_user = load_users_file_to_structs(USERS_FILE);
 		delete_user(username, v_user);
 	}
 
-	void perform_manage_users_option(e_manage_users_options option, s_user t_user)
+	bool update_user(string username, vector<s_user> &v_user)
+	{
+		char answer;
+		s_user user;
+
+		answer = 'n';
+		if (is_user_exist(username, user))
+		{
+			print_user_card(user);
+			cout << "Do you wish to update this user? (Y/N)\n-> ";
+			cin >> answer;
+			if (answer == 'Y' || answer == 'y')
+			{
+				for (s_user &to_update : v_user)
+				{
+					if (to_update.username == user.username)
+						to_update = read_new_user();
+				}
+				save_users_to_file(USERS_FILE, v_user);
+				cout << "user updated successfuly" << endl;
+				return (true);
+			}
+		}
+		else
+		{
+			cerr << "Error: the user (" << username << ") is not found" << endl;
+			return (false);
+		}
+		return (false);
+	}
+
+	void show_update_user_screen(void)
+	{
+		string username;
+		vector<s_user> v_user;
+
+		cout << "________________________________\n";
+		cout << "\t  Update user\n";
+		cout << "________________________________\n"
+			 << endl;
+		username = input::read_string("Enter the username: ");
+		if (username == "admin")
+		{
+			cout << "\nadmin user cannot be updated\n" << endl;
+			return ;
+		}
+		v_user = load_users_file_to_structs(USERS_FILE);
+		update_user(username, v_user);
+	}
+
+	void show_find_user_screen(void)
+	{
+		string username;
+		s_user user;
+
+
+		cout << "________________________________\n";
+		cout << "\t  find user\n";
+		cout << "________________________________\n"
+			 << endl;
+		username = input::read_string("Enter the username: ");
+		if (is_user_exist(username, user))
+			print_user_card(user);
+		else
+			cerr << "Error: the user (" << username << ") is not found" << endl;
+	}
+
+	void perform_manage_users_option(e_manage_users_options option)
 	{
 		switch (option)
 		{
 		case e_manage_users_options::e_show_users_list:
 			system("clear");
 			print_users_table();
-			back_to_manage_users_menu(t_user);
+			back_to_manage_users_menu();
 			break;
 		case e_manage_users_options::e_add_new_user:
 			system("clear");
 			show_add_new_users_screen();
-			back_to_manage_users_menu(t_user);
+			back_to_manage_users_menu();
 			break;
 		case e_manage_users_options::e_delete_user:
 			system("clear");
 			show_delete_user_screen();
-			back_to_manage_users_menu(t_user);
+			back_to_manage_users_menu();
 			break;
-		// case e_manage_users_options::e_update_user_infos:
-		// 	system("clear");
-		// 	show_update_user_screen();
-		// 	back_to_manage_users_menu(t_user);
-		// 	break;
-		// case e_manage_users_options::e_find_user:
-		// 	system("clear");
-		// 	show_find_user_screen();
-		// 	back_to_manage_users_menu(t_user);
-		// 	break;
+		case e_manage_users_options::e_update_user_infos:
+			system("clear");
+			show_update_user_screen();
+			back_to_manage_users_menu();
+			break;
+		case e_manage_users_options::e_find_user:
+			system("clear");
+			show_find_user_screen();
+			back_to_manage_users_menu();
+			break;
 		case e_manage_users_options::e_go_main_menu:
 			system("clear");
-			show_main_menu_screen(t_user);
+			show_main_menu_screen();
 			break;
 		default:
 			exit(0);
 		}
 	}
 
-	void show_manage_users_screen(s_user t_user)
+	void show_manage_users_screen()
 	{
 		system("clear");
 		cout << "=====================================\n";
@@ -1061,23 +1135,26 @@ namespace bank
 		cout << "\t[6]: Back to main menu\n";
 		cout << "=====================================\n";
 		cout << endl;
-		perform_manage_users_option(e_manage_users_options(read_manage_users_option()), t_user);
+		perform_manage_users_option(e_manage_users_options(read_manage_users_option()));
 	}
 
 	void show_login_screen(void)
 	{
-		s_user user;
+		bool	login_success = true;
 
-		system("clear");
-		cout << "=========================\n";
-		cout << "     login screen\n";
-		cout << "=========================" << endl;
 		do
 		{
-			user.username = input::read_string("username: ");
-			user.password = input::read_string("password: ");
-		} while (!check_login(user));
-		show_main_menu_screen(user);
+			system("clear");
+			cout << "=========================\n";
+			cout << "     login screen\n";
+			cout << "=========================" << endl;
+			if (!login_success)
+				cerr << "\nIncorrect username or password, try again\n\n";
+			current_user.username = input::read_string("username: ");
+			current_user.password = input::read_string("password: ");
+			login_success = check_login(current_user);
+		} while (!login_success);
+		show_main_menu_screen();
 	}
 
 	void	show_no_permission_screen(void)
@@ -1088,69 +1165,69 @@ namespace bank
 		cout << "_________________________" << endl;
 	}
 
-	void perform_main_menu_option(e_main_menu_options option, s_user t_user)
+	void perform_main_menu_option(e_main_menu_options option)
 	{
 		switch (option)
 		{
 		case e_main_menu_options::e_show_clients_list:
 			system("clear");
-			if ((t_user.permissions & 1) != 1)
+			if ((current_user.permissions & 1) != 1)
 				show_no_permission_screen();
 			else
 				print_clients_table();
-			back_to_main_menu(t_user);
+			back_to_main_menu();
 			break;
 		case e_main_menu_options::e_add_new_client:
 			system("clear");
-			if ((t_user.permissions & 1<<1) != 1<<1)
+			if ((current_user.permissions & 1<<1) != 1<<1)
 				show_no_permission_screen();
 			else
 				show_add_new_clients_screen();
-			back_to_main_menu(t_user);
+			back_to_main_menu();
 			break;
 		case e_main_menu_options::e_delete_client:
 			system("clear");
-			if ((t_user.permissions & 1<<2) != 1<<2)
+			if ((current_user.permissions & 1<<2) != 1<<2)
 				show_no_permission_screen();
 			else
 				show_delete_client_screen();
-			back_to_main_menu(t_user);
+			back_to_main_menu();
 			break;
 		case e_main_menu_options::e_update_client_infos:
 			system("clear");
-			if ((t_user.permissions & 1<<3) != 1<<3)
+			if ((current_user.permissions & 1<<3) != 1<<3)
 				show_no_permission_screen();
 			else
 				show_update_client_screen();
-			back_to_main_menu(t_user);
+			back_to_main_menu();
 			break;
 		case e_main_menu_options::e_find_client:
 			system("clear");
-			if ((t_user.permissions & 1<<4) != 1<<4)
+			if ((current_user.permissions & 1<<4) != 1<<4)
 				show_no_permission_screen();
 			else
 				show_find_client_screen();
-			back_to_main_menu(t_user);
+			back_to_main_menu();
 			break;
 		case e_main_menu_options::e_transactions:
 			system("clear");
-			if ((t_user.permissions & 1<<5) != 1<<5)
+			if ((current_user.permissions & 1<<5) != 1<<5)
 			{
 				show_no_permission_screen();
-				back_to_main_menu(t_user);
+				back_to_main_menu();
 			}
 			else
-				show_transactions_screen(t_user);
+				show_transactions_screen();
 			break;
 		case e_main_menu_options::e_manage_users:
 			system("clear");
-			if ((t_user.permissions & 1<<6) != 1<<6)
+			if ((current_user.permissions & 1<<6) != 1<<6)
 			{
 				show_no_permission_screen();
-				back_to_main_menu(t_user);
+				back_to_main_menu();
 			}
 			else
-				show_manage_users_screen(t_user);
+				show_manage_users_screen();
 			break;
 		case e_main_menu_options::e_logout:
 			system("clear");
@@ -1169,7 +1246,7 @@ namespace bank
 		return (option);
 	}
 
-	void show_main_menu_screen(s_user t_user)
+	void show_main_menu_screen()
 	{
 		system("clear");
 		cout << "=====================================\n";
@@ -1185,6 +1262,6 @@ namespace bank
 		cout << "\t[8]: Logout\n";
 		cout << "=====================================\n"
 			 << endl;
-		perform_main_menu_option(e_main_menu_options(read_main_menu_option()), t_user);
+		perform_main_menu_option(e_main_menu_options(read_main_menu_option()));
 	}
 }
