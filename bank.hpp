@@ -58,6 +58,7 @@ namespace bank
 		string	username;
 		string	password;
 		short	permissions;
+		bool	to_be_deleted = false;
 	};
 
 	void show_transactions_screen(s_user t_user);
@@ -204,7 +205,6 @@ namespace bank
 			{
 				mark_client_to_be_deleted_by_id(id, v_data);
 				save_clients_to_file(FILE_NAME, v_data);
-				v_data = load_file_to_data_vector(FILE_NAME);
 				cout << "Client deleted successfuly" << endl;
 				return (true);
 			}
@@ -864,15 +864,18 @@ namespace bank
 		return (permissions);
 	}
 
-	bool	is_user_exist(string username)
+	bool	is_user_exist(string username, s_user &user)
 	{
 		vector<s_user> v_users;
 
 		v_users = load_users_file_to_structs(USERS_FILE);
 		for (s_user checker : v_users)
 		{
-			if (checker.username == user.username)
+			if (checker.username == username)
+			{
+				user = checker;
 				return (true);
+			}
 		}
 		return (false);
 	}
@@ -882,7 +885,7 @@ namespace bank
 		s_user	user;
 
 		user.username = input::read_string("Enter username: ");
-		while (is_user_exist(user.username))
+		while (is_user_exist(user.username, user))
 		{
 			cout << "There is a user with this username, Try another\n";
 			user.username = input::read_string("Enter username: ");
@@ -922,6 +925,90 @@ namespace bank
 		add_new_users();
 	}
 
+	void save_users_to_file(string file_name, vector<s_user> &v_user)
+	{
+		fstream file;
+		string record;
+
+		file.open(USERS_FILE, ios::out);
+		if (file.is_open())
+		{
+			for (s_user &user : v_user)
+			{
+				if (!user.to_be_deleted)
+				{
+					record = record_user(user);
+					file << record << endl;
+				}
+			}
+			file.close();
+		}
+		else
+		{
+			cerr << "Failed to open file :(" << endl;
+			exit(1);
+		}
+	}
+
+	void	mark_user_to_be_deleted(string username, vector<s_user> &v_users)
+	{
+		for (s_user &user : v_users)
+		{
+			if (user.username == username)
+				user.to_be_deleted = true;
+		}
+	}
+
+	void	print_user_card(s_user user)
+	{
+		cout << "_________________________\n";
+		cout << "  username: " << user.username;
+		cout << "\n  password: " << user.password;
+		cout << "\n  permissions: " << user.permissions;
+		cout << "\n_________________________" << endl;
+	}
+
+	bool delete_user(string username, vector<s_user> v_user)
+	{
+		char answer;
+		s_user user;
+
+		answer = 'n';
+		if (is_user_exist(username, user))
+		{
+			print_user_card(user);
+			cout << "Do you wish to delete this user? (Y/N)\n-> ";
+			cin >> answer;
+			if (answer == 'Y' || answer == 'y')
+			{
+				mark_user_to_be_deleted(username, v_user);
+				save_users_to_file(USERS_FILE, v_user);
+				cout << "user deleted successfuly" << endl;
+				return (true);
+			}
+		}
+		else
+		{
+			cerr << "Error: the user (" << username << ") is not found" << endl;
+			return (false);
+		}
+		return (false);
+	}
+
+	void show_delete_user_screen(void)
+	{
+		string username;
+		vector<s_user> v_user;
+
+		cout << "________________________________\n";
+		cout << "\t  Delete user\n";
+		cout << "________________________________\n"
+			 << endl;
+		v_user = load_users_file_to_structs(USERS_FILE);
+		username = input::read_string("Enter the username: ");
+		delete_user(username, v_user);
+	}
+
 	void perform_manage_users_option(e_manage_users_options option, s_user t_user)
 	{
 		switch (option)
@@ -936,11 +1023,11 @@ namespace bank
 			show_add_new_users_screen();
 			back_to_manage_users_menu(t_user);
 			break;
-		// case e_manage_users_options::e_delete_user:
-		// 	system("clear");
-		// 	show_delete_user_screen();
-		// 	back_to_manage_users_menu(t_user);
-		// 	break;
+		case e_manage_users_options::e_delete_user:
+			system("clear");
+			show_delete_user_screen();
+			back_to_manage_users_menu(t_user);
+			break;
 		// case e_manage_users_options::e_update_user_infos:
 		// 	system("clear");
 		// 	show_update_user_screen();
