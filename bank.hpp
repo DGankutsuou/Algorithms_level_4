@@ -45,14 +45,14 @@ namespace bank
 
 	enum e_user_permissions
 	{
-		e_all = 0b11111111,
-		e_show_clients_list = 0b00000001,
-		e_add_new_client = 1<<1, // 2 = 0b00000010
-		e_delete_client = 1<<2, //  4 = 0b00000100
-		e_update_client = 1<<3, //  8 = 0b00001000
-		e_find_client = 1<<4, //   16 = 0b00010000
-		e_transactions = 1<<5, //  32 = 0b00100000
-		e_manage_users = 1<<6 //   64 = 0b01000000
+		p_all = 0b11111111,
+		p_show_clients_list = 0b00000001,
+		p_add_new_client = 1<<1, // 2 = 0b00000010
+		p_delete_client = 1<<2, //  4 = 0b00000100
+		p_update_client = 1<<3, //  8 = 0b00001000
+		p_find_client = 1<<4, //   16 = 0b00010000
+		p_transactions = 1<<5, //  32 = 0b00100000
+		p_manage_users = 1<<6 //   64 = 0b01000000
 	};
 
 	struct s_data
@@ -78,6 +78,16 @@ namespace bank
 	void show_transactions_screen();
 	void show_main_menu_screen();
 	void show_manage_users_screen();
+	void back_to_main_menu(void);
+	void show_no_permission_screen(void);
+
+	bool	check_access_permission(e_user_permissions permission)
+	{
+		if ((current_user.permissions & permission) == permission)
+			return (true);
+		else
+			return (false);
+	}
 
 	string read_account_number(void)
 	{
@@ -364,6 +374,12 @@ namespace bank
 	{
 		vector<s_data> v_data;
 
+		if (!check_access_permission(e_user_permissions::p_show_clients_list))
+		{
+			show_no_permission_screen();
+			back_to_main_menu();
+			return ;
+		}
 		v_data = load_file_to_data_vector(FILE_NAME);
 		if (v_data.size() == 0)
 			cout << "No available clients in the system" << endl;
@@ -431,6 +447,12 @@ namespace bank
 
 	void show_add_new_clients_screen(void)
 	{
+		if (!check_access_permission(e_user_permissions::p_add_new_client))
+		{
+			show_no_permission_screen();
+			back_to_main_menu();
+			return ;
+		}
 		cout << "________________________________\n";
 		cout << "\tAdd new clients\n";
 		cout << "________________________________\n"
@@ -443,6 +465,12 @@ namespace bank
 		string account_number;
 		vector<s_data> v_data;
 
+		if (!check_access_permission(e_user_permissions::p_delete_client))
+		{
+			show_no_permission_screen();
+			back_to_main_menu();
+			return ;
+		}
 		cout << "________________________________\n";
 		cout << "\tDelete client\n";
 		cout << "________________________________\n"
@@ -457,6 +485,12 @@ namespace bank
 		string account_number;
 		vector<s_data> v_data;
 
+		if (!check_access_permission(e_user_permissions::p_update_client))
+		{
+			show_no_permission_screen();
+			back_to_main_menu();
+			return ;
+		}
 		cout << "________________________________\n";
 		cout << "\tUpdate client\n";
 		cout << "________________________________\n"
@@ -472,6 +506,12 @@ namespace bank
 		s_data client;
 		string account_number;
 
+		if (!check_access_permission(e_user_permissions::p_find_client))
+		{
+			show_no_permission_screen();
+			back_to_main_menu();
+			return ;
+		}
 		cout << "________________________________\n";
 		cout << "\tFind client\n";
 		cout << "________________________________\n"
@@ -704,6 +744,12 @@ namespace bank
 
 	void show_transactions_screen()
 	{
+		if (!check_access_permission(e_user_permissions::p_transactions))
+		{
+			show_no_permission_screen();
+			back_to_main_menu();
+			return ;
+		}
 		system("clear");
 		cout << "=====================================\n";
 		cout << "          Transactions menu          \n";
@@ -854,25 +900,25 @@ namespace bank
 		cout << "What permissios you which to give?\n";
 		answer = input::read_string("Show clients list: ");
 		if (answer == "Y" || answer == "y")
-			permissions |= e_user_permissions::e_show_clients_list;
+			permissions |= e_user_permissions::p_show_clients_list;
 		answer = input::read_string("Add new client: ");
 		if (answer == "Y" || answer == "y")
-			permissions |= e_user_permissions::e_add_new_client;
+			permissions |= e_user_permissions::p_add_new_client;
 		answer = input::read_string("Delete client: ");
 		if (answer == "Y" || answer == "y")
-			permissions |= e_user_permissions::e_delete_client;
+			permissions |= e_user_permissions::p_delete_client;
 		answer = input::read_string("Update client: ");
 		if (answer == "Y" || answer == "y")
-			permissions |= e_user_permissions::e_update_client;
+			permissions |= e_user_permissions::p_update_client;
 		answer = input::read_string("Find client: ");
 		if (answer == "Y" || answer == "y")
-			permissions |= e_user_permissions::e_find_client;
+			permissions |= e_user_permissions::p_find_client;
 		answer = input::read_string("Transactions: ");
 		if (answer == "Y" || answer == "y")
-			permissions |= e_user_permissions::e_transactions;
+			permissions |= e_user_permissions::p_transactions;
 		answer = input::read_string("Manage users: ");
 		if (answer == "Y" || answer == "y")
-			permissions |= e_user_permissions::e_manage_users;
+			permissions |= e_user_permissions::p_manage_users;
 		// you could do += instead of |=
 		return (permissions);
 	}
@@ -1136,6 +1182,12 @@ namespace bank
 
 	void show_manage_users_screen()
 	{
+		if (!check_access_permission(e_user_permissions::p_manage_users))
+		{
+			show_no_permission_screen();
+			back_to_main_menu();
+			return ;
+		}
 		system("clear");
 		cout << "=====================================\n";
 		cout << "             Manage users            \n";
@@ -1184,63 +1236,36 @@ namespace bank
 		{
 		case e_main_menu_options::e_show_clients_list:
 			system("clear");
-			if ((current_user.permissions & 1) != 1)
-				show_no_permission_screen();
-			else
-				print_clients_table();
+			print_clients_table();
 			back_to_main_menu();
 			break;
 		case e_main_menu_options::e_add_new_client:
 			system("clear");
-			if ((current_user.permissions & 1<<1) != 1<<1)
-				show_no_permission_screen();
-			else
-				show_add_new_clients_screen();
+			show_add_new_clients_screen();
 			back_to_main_menu();
 			break;
 		case e_main_menu_options::e_delete_client:
 			system("clear");
-			if ((current_user.permissions & 1<<2) != 1<<2)
-				show_no_permission_screen();
-			else
-				show_delete_client_screen();
+			show_delete_client_screen();
 			back_to_main_menu();
 			break;
 		case e_main_menu_options::e_update_client_infos:
 			system("clear");
-			if ((current_user.permissions & 1<<3) != 1<<3)
-				show_no_permission_screen();
-			else
-				show_update_client_screen();
+			show_update_client_screen();
 			back_to_main_menu();
 			break;
 		case e_main_menu_options::e_find_client:
 			system("clear");
-			if ((current_user.permissions & 1<<4) != 1<<4)
-				show_no_permission_screen();
-			else
-				show_find_client_screen();
+			show_find_client_screen();
 			back_to_main_menu();
 			break;
 		case e_main_menu_options::e_transactions:
 			system("clear");
-			if ((current_user.permissions & 1<<5) != 1<<5)
-			{
-				show_no_permission_screen();
-				back_to_main_menu();
-			}
-			else
-				show_transactions_screen();
+			show_transactions_screen();
 			break;
 		case e_main_menu_options::e_manage_users:
 			system("clear");
-			if ((current_user.permissions & 1<<6) != 1<<6)
-			{
-				show_no_permission_screen();
-				back_to_main_menu();
-			}
-			else
-				show_manage_users_screen();
+			show_manage_users_screen();
 			break;
 		case e_main_menu_options::e_logout:
 			system("clear");
