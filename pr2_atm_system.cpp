@@ -161,6 +161,28 @@ void show_deposit_screen(void)
 	deposit_to_user_account(v_user);
 }
 
+void show_quick_withdraw_screen(void)
+{
+	vector<s_user> v_user;
+
+	cout << "________________________________\n";
+	cout << "\tQuick withdraw screen\n";
+	cout << "________________________________\n";
+	v_user = load_users_file_to_structs(USERS_FILE);
+	withdraw_from_user_account(v_user);
+}
+
+void show_normal_withdraw_screen(void)
+{
+	vector<s_user> v_user;
+
+	cout << "________________________________\n";
+	cout << "\tNormal withdraw screen\n";
+	cout << "________________________________\n";
+	v_user = load_users_file_to_structs(USERS_FILE);
+	withdraw_from_user_account(v_user);
+}
+
 void perform_main_menu_option(e_main_menu_options option)
 {
 	switch (option)
