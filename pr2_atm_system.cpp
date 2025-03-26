@@ -27,6 +27,8 @@ s_user current_user;
 
 void show_login_screen(void);
 void show_main_menu_screen(void);
+void show_quick_withdraw_screen(void);
+void show_normal_withdraw_screen(void);
 
 s_user split_user_record(string record)
 {
@@ -161,26 +163,76 @@ void show_deposit_screen(void)
 	deposit_to_user_account(v_user);
 }
 
+bool withdraw_from_user_account(vector<s_user> &v_user, double withdraw, bool quick_withdraw = false)
+{
+	char answer;
+	s_user user;
+
+	answer = 'n';
+	cout << "Your current balance is: " << current_user.balance << "$" << endl;
+	for (s_user &user : v_user)
+	{
+		if (user.account_number == current_user.account_number)
+		{
+			if (user.balance < withdraw)
+			{
+				cout << "You can withdraw up to " << user.balance << "$\n";
+				cout << "Make another choise" << endl;
+				if (quick_withdraw)
+					show_quick_withdraw_screen();
+				else
+					show_normal_withdraw_screen();
+			}
+			cout << "Do you wish to perform this transaction? (Y/N)\n-> ";
+			cin >> answer;
+			if (answer == 'Y' || answer == 'y')
+			{
+				user.balance -= withdraw;
+				cout << "Withdraw successed, balance now is "
+					 << user.balance << '$' << endl;
+				save_users_to_file(USERS_FILE, v_user);
+				return (true);
+			}
+			return (false);
+		}
+	}
+	return (false);
+}
+
+double quick_withdraw_menu()
+{
+
+}
+
 void show_quick_withdraw_screen(void)
 {
+	double	withdraw;
 	vector<s_user> v_user;
 
 	cout << "________________________________\n";
 	cout << "\tQuick withdraw screen\n";
 	cout << "________________________________\n";
 	v_user = load_users_file_to_structs(USERS_FILE);
-	withdraw_from_user_account(v_user);
+	withdraw = quick_withdraw_menu();
+	withdraw_from_user_account(v_user, withdraw, true);
 }
 
 void show_normal_withdraw_screen(void)
 {
+	double	withdraw = 1;
 	vector<s_user> v_user;
 
 	cout << "________________________________\n";
 	cout << "\tNormal withdraw screen\n";
 	cout << "________________________________\n";
 	v_user = load_users_file_to_structs(USERS_FILE);
-	withdraw_from_user_account(v_user);
+	cout << "How much do you wish to withdraw?\n";
+	while (withdraw % 5 != 0)
+	{
+		cout << "(must be multiple of 5)-> ";
+		cin >> withdraw;
+	}
+	withdraw_from_user_account(v_user, withdraw);
 }
 
 void perform_main_menu_option(e_main_menu_options option)
