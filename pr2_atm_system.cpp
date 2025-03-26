@@ -201,7 +201,14 @@ bool withdraw_from_user_account(vector<s_user> &v_user, double withdraw, bool qu
 
 double quick_withdraw_menu()
 {
+	double	withdraw = 5;
 
+	cout << "[1] 20\t\t\t[2] 50\n";
+	cout << "[3] 100\t\t\t[4] 200\n";
+	cout << "[5] 400\t\t\t[6] 600\n";
+	cout << "[7] 800\t\t\t[8] 1000\n";
+	cout << "[9] Exit" << endl;
+	
 }
 
 void show_quick_withdraw_screen(void)
