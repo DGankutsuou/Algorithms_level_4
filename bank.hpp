@@ -57,7 +57,7 @@ namespace bank
 
 	struct s_data
 	{
-		string acount_number;
+		string account_number;
 		string pin_code;
 		string name;
 		string phone;
@@ -104,7 +104,7 @@ namespace bank
 		vector<string> splited;
 
 		splited = ft::spliter(str, "#//#");
-		data.acount_number = splited[0];
+		data.account_number = splited[0];
 		data.pin_code = splited[1];
 		data.name = splited[2];
 		data.phone = splited[3];
@@ -115,7 +115,7 @@ namespace bank
 	void print_data(s_data &data)
 	{
 		cout << "\nClient data:\n\n";
-		cout << "Acount number : " << data.acount_number << "\n";
+		cout << "Acount number : " << data.account_number << "\n";
 		cout << "Pin code      : " << data.pin_code << "\n";
 		cout << "Client name   : " << data.name << "\n";
 		cout << "Phone number  : " << data.phone << "\n";
@@ -151,7 +151,7 @@ namespace bank
 	{
 		for (s_data &data : v_data)
 		{
-			if (data.acount_number == id)
+			if (data.account_number == id)
 			{
 				client = data;
 				return (true);
@@ -167,7 +167,7 @@ namespace bank
 
 		record = "";
 		delim = "#//#";
-		record += data.acount_number + delim;
+		record += data.account_number + delim;
 		record += data.pin_code + delim;
 		record += data.name + delim;
 		record += data.phone + delim;
@@ -179,7 +179,7 @@ namespace bank
 	{
 		for (s_data &data : v_data)
 		{
-			if (data.acount_number == id)
+			if (data.account_number == id)
 			{
 				data.to_be_deleted = true;
 				return (true);
@@ -253,7 +253,7 @@ namespace bank
 			while (getline(file, line))
 			{
 				data = split_record(line);
-				if (data.acount_number == account_number)
+				if (data.account_number == account_number)
 				{
 					file.close();
 					return (true);
@@ -276,13 +276,13 @@ namespace bank
 
 		v_data = load_file_to_data_vector(FILE_NAME);
 		cout << "Enter accounnt number: ";
-		getline(cin >> ws, data.acount_number);
-		while (is_client_exist_by_id(data.acount_number, FILE_NAME))
+		getline(cin >> ws, data.account_number);
+		while (is_client_exist_by_id(data.account_number, FILE_NAME))
 		{
-			cout << "This account number (" << data.acount_number
+			cout << "This account number (" << data.account_number
 				 << ") allready exist\n";
 			cout << "Enter another number: ";
-			getline(cin >> ws, data.acount_number);
+			getline(cin >> ws, data.account_number);
 		}
 		data.pin_code = input::read_string("Enter pin code: ");
 		data.name = input::read_string("Enter client name: ");
@@ -362,7 +362,7 @@ namespace bank
 
 	void line_printer(s_data &data)
 	{
-		cout << "| " << left << setw(14) << data.acount_number;
+		cout << "| " << left << setw(14) << data.account_number;
 		cout << "| " << left << setw(14) << data.pin_code;
 		cout << "| " << left << setw(30) << data.name;
 		cout << "| " << left << setw(14) << data.phone;
@@ -402,7 +402,7 @@ namespace bank
 	{
 		s_data data;
 
-		data.acount_number = id;
+		data.account_number = id;
 		cout << "Enter pin code: ";
 		getline(cin >> ws, data.pin_code);
 		data.name = input::read_string("Enter client name: ");
@@ -426,7 +426,7 @@ namespace bank
 			{
 				for (s_data &data : v_data)
 				{
-					if (data.acount_number == id)
+					if (data.account_number == id)
 					{
 						data = change_client_infos(id);
 						break;
@@ -570,7 +570,7 @@ namespace bank
 		cin >> deposit;
 		for (s_data &data : v_data)
 		{
-			if (data.acount_number == account_number)
+			if (data.account_number == account_number)
 			{
 				cout << "Do you wish to perform this transaction? (Y/N)\n-> ";
 				cin >> answer;
@@ -605,7 +605,7 @@ namespace bank
 		cin >> withdraw;
 		for (s_data &data : v_data)
 		{
-			if (data.acount_number == account_number)
+			if (data.account_number == account_number)
 			{
 				while (data.account_balance < withdraw)
 				{
@@ -676,7 +676,7 @@ namespace bank
 
 	void line_printer_for_total_balances(s_data &data)
 	{
-		cout << "| " << left << setw(14) << data.acount_number;
+		cout << "| " << left << setw(14) << data.account_number;
 		cout << "| " << left << setw(30) << data.name;
 		cout << "| " << left << setw(14) << to_string(data.account_balance) + "$";
 		cout << endl;
