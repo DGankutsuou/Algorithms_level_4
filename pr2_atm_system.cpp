@@ -132,8 +132,8 @@ void deposit_to_user_account(vector<s_user> &v_user)
 
 	answer = 'n';
 	cout << "Your balance is: " << current_user.balance << "$" << endl;
-	cout << "\nHow much do you wish to deposit?\n-> ";
-	cin >> deposit;
+	cout << "\nHow much do you wish to deposit?\n";
+	deposit = input::read_positive_number("Enter a positive deposite: ");
 	for (s_user &user : v_user)
 	{
 		if (user.account_number == current_user.account_number)
@@ -169,25 +169,27 @@ bool withdraw_from_user_account(vector<s_user> &v_user, double withdraw, bool qu
 	s_user user;
 
 	answer = 'n';
-	cout << "Your current balance is: " << current_user.balance << "$" << endl;
 	for (s_user &user : v_user)
 	{
 		if (user.account_number == current_user.account_number)
 		{
 			if (user.balance < withdraw)
 			{
+				system("clear");
 				cout << "You can withdraw up to " << user.balance << "$\n";
 				cout << "Make another choise" << endl;
 				if (quick_withdraw)
 					show_quick_withdraw_screen();
 				else
 					show_normal_withdraw_screen();
+				return (false);
 			}
 			cout << "Do you wish to perform this transaction? (Y/N)\n-> ";
 			cin >> answer;
 			if (answer == 'Y' || answer == 'y')
 			{
 				user.balance -= withdraw;
+				current_user.balance -= withdraw;
 				cout << "Withdraw successed, balance now is "
 					 << user.balance << '$' << endl;
 				save_users_to_file(USERS_FILE, v_user);
@@ -201,14 +203,20 @@ bool withdraw_from_user_account(vector<s_user> &v_user, double withdraw, bool qu
 
 double quick_withdraw_menu()
 {
-	double	withdraw = 5;
+	short	option = 0;
+	double	withdraw[8] = {20, 50, 100, 200, 400, 600, 800, 1000};
 
+	cout << "________________________________\n";
 	cout << "[1] 20\t\t\t[2] 50\n";
 	cout << "[3] 100\t\t\t[4] 200\n";
 	cout << "[5] 400\t\t\t[6] 600\n";
 	cout << "[7] 800\t\t\t[8] 1000\n";
 	cout << "[9] Exit" << endl;
-	
+	cout << "________________________________\n";
+	option = input::read_number_in_range(1, 9, "Enter your option ");
+	if (option == 9)
+		show_main_menu_screen();
+	return (withdraw[option - 1]);
 }
 
 void show_quick_withdraw_screen(void)
@@ -218,6 +226,8 @@ void show_quick_withdraw_screen(void)
 
 	cout << "________________________________\n";
 	cout << "\tQuick withdraw screen\n";
+	cout << "________________________________\n";
+	cout << "Your current balance is: " << current_user.balance << "$\n";
 	cout << "________________________________\n";
 	v_user = load_users_file_to_structs(USERS_FILE);
 	withdraw = quick_withdraw_menu();
@@ -232,12 +242,13 @@ void show_normal_withdraw_screen(void)
 	cout << "________________________________\n";
 	cout << "\tNormal withdraw screen\n";
 	cout << "________________________________\n";
+	cout << "Your current balance is: " << current_user.balance << "$" << endl;
+	cout << "________________________________\n";
 	v_user = load_users_file_to_structs(USERS_FILE);
 	cout << "How much do you wish to withdraw?\n";
-	while (withdraw % 5 != 0)
+	while ((int)withdraw % 5 != 0)
 	{
-		cout << "(must be multiple of 5)-> ";
-		cin >> withdraw;
+		withdraw = input::read_positive_number("must be mltiple of 5: ");
 	}
 	withdraw_from_user_account(v_user, withdraw);
 }
@@ -249,12 +260,12 @@ void perform_main_menu_option(e_main_menu_options option)
 	case e_main_menu_options::e_quick_withdraw:
 		system("clear");
 		show_quick_withdraw_screen();
-		back_to_main_menu_menu();
+		back_to_main_menu();
 		break;
 	case e_main_menu_options::e_normal_withdraw:
 		system("clear");
 		show_normal_withdraw_screen();
-		back_to_main_menu_menu();
+		back_to_main_menu();
 		break;
 	case e_main_menu_options::e_deposit:
 		system("clear");
